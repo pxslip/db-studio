@@ -38,6 +38,13 @@ const database = (): Record<string, string> => ({
 	default: 'directus',
 });
 
+const prefix = (): Record<string, string> => ({
+	type: 'input',
+	name: 'prefix',
+	message: 'Database Table Prefix:',
+	default: 'directus',
+});
+
 const user = (): Record<string, string> => ({
 	type: 'input',
 	name: 'user',
@@ -67,9 +74,9 @@ const ssl = (): Record<string, string | boolean> => ({
 
 export const databaseQuestions = {
 	sqlite3: [filename],
-	mysql: [host, port, database, user, password],
-	pg: [host, port, database, user, password, ssl],
-	cockroachdb: [host, port, database, user, password, ssl],
-	oracledb: [host, port, database, user, password],
-	mssql: [host, port, database, user, password, encrypt],
+	mysql: [host, port, database, prefix, user, password],
+	pg: [host, port, database, prefix, user, password, ssl],
+	cockroachdb: [host, port, database, prefix, user, password, ssl],
+	oracledb: [host, port, database, prefix, user, password],
+	mssql: [host, port, database, prefix, user, password, encrypt],
 };
