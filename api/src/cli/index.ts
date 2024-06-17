@@ -25,11 +25,11 @@ export async function createCli(): Promise<Command> {
 
 	await emitter.emitInit('cli.before', { program });
 
-	program.name('directus').usage('[command] [options]');
+	program.name('db-studio').usage('[command] [options]');
 	program.version(pkg.version, '-v, --version');
 
-	program.command('start').description('Start the Directus API').action(startServer);
-	program.command('init').description('Create a new Directus Project').action(init);
+	program.command('start').description('Start the DB Studio API').action(startServer);
+	program.command('init').description('Create a new DB Studio Project').action(init);
 
 	// Security
 	const securityCommand = program.command('security');
