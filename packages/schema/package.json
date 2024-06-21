@@ -22,7 +22,6 @@
 		"url": "https://github.com/pxslip/db-studio.git",
 		"directory": "packages/schema"
 	},
-	"funding": "https://github.com/pxslip/db-studio?sponsor=1",
 	"license": "GPL-3.0",
 	"exports": {
 		".": "./dist/index.js",
