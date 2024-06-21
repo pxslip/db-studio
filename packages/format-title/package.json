@@ -18,7 +18,6 @@
 		"url": "https://github.com/pxslip/db-studio.git",
 		"directory": "packages/format-title"
 	},
-	"funding": "https://github.com/pxslip/db-studio?sponsor=1",
 	"license": "MIT",
 	"type": "module",
 	"exports": {
