@@ -1,15 +1,15 @@
 ---
 description:
-  The JS SDK provides an intuitive interface for the Directus API from within a JavaScript-powered project (browsers and
-  Node.js). The default implementation uses [Axios](https://npmjs.com/axios) for transport and `localStorage` for
+  The JS SDK provides an intuitive interface for the DB Studio API from within a JavaScript-powered project (browsers
+  and Node.js). The default implementation uses [Axios](https://npmjs.com/axios) for transport and `localStorage` for
   storing state.
 readTime: 14 min read
 ---
 
 # JavaScript SDK
 
-> The JS SDK provides an intuitive interface for the Directus API from within a JavaScript-powered project (browsers and
-> Node.js). The default implementation uses [Axios](https://npmjs.com/axios) for transport and `localStorage` for
+> The JS SDK provides an intuitive interface for the DB Studio API from within a JavaScript-powered project (browsers
+> and Node.js). The default implementation uses [Axios](https://npmjs.com/axios) for transport and `localStorage` for
 > storing state. Advanced customizations are available.
 
 ## Installation
@@ -24,9 +24,9 @@ This is the starting point to use the JS SDK. After you've created the `Directus
 methods from it to access your project and data.
 
 ```js
-import { Directus } from '@db-studio/sdk';
+import { Studio } from '@db-studio/sdk';
 
-const directus = new Directus('http://directus.example.com');
+const studio = new Studio('http://studio.example.com');
 ```
 
 You can always access data available to the [public role](/configuration/users-roles-permissions.html#directus-roles).
@@ -36,7 +36,7 @@ async function publicData() {
 	// GET DATA
 
 	// We don't need to authenticate if the public role has access to some_public_collection.
-	const publicData = await directus.items('some_public_collection').readByQuery({ sort: ['id'] });
+	const publicData = await studio.items('some_public_collection').readByQuery({ sort: ['id'] });
 
 	console.log(publicData.data);
 }
@@ -55,7 +55,7 @@ async function start() {
 	let authenticated = false;
 
 	// Try to authenticate with token if exists
-	await directus.auth
+	await studio.auth
 		.refresh()
 		.then(() => {
 			authenticated = true;
@@ -67,7 +67,7 @@ async function start() {
 		const email = window.prompt('Email:');
 		const password = window.prompt('Password:');
 
-		await directus.auth
+		await studio.auth
 			.login({ email, password })
 			.then(() => {
 				authenticated = true;
@@ -80,7 +80,7 @@ async function start() {
 	// GET DATA
 
 	// After authentication, we can fetch data from any collections that the user has permissions to.
-	const privateData = await directus.items('some_private_collection').readByQuery({ sort: ['id'] });
+	const privateData = await studio.items('some_private_collection').readByQuery({ sort: ['id'] });
 
 	console.log(privateData.data);
 }
@@ -96,9 +96,9 @@ sometimes you may need to customize these defaults.
 ### Constructor
 
 ```js
-import { Directus } from '@db-studio/sdk';
+import { Studio } from '@db-studio/sdk';
 
-const directus = new Directus(url, init);
+const studio = new Studio(url, init);
 ```
 
 ### Parameters
@@ -108,7 +108,7 @@ const directus = new Directus(url, init);
 #### `url` _required_
 
 - **Type** — `String`
-- **Description** — A string that points to your Directus instance. E.g., `https://example.directus.io`
+- **Description** — A string that points to your DB Studio instance. E.g., `https://example.studio.io`
 - **Default** — N/A
 
 <br />
@@ -144,7 +144,7 @@ const config = {
 
 ## Customize `auth`
 
-Defines how authentication is handled by the SDK. By default, Directus creates an instance of `auth` which handles
+Defines how authentication is handled by the SDK. By default, DB Studio creates an instance of `auth` which handles
 refresh tokens automatically.
 
 ```js
@@ -203,7 +203,7 @@ It is possible to provide a custom implementation by extending `IAuth`. While th
 situations, it is not needed for most use-cases.
 
 ```js
-import { IAuth, Directus } from '@db-studio/sdk';
+import { IAuth, Studio } from '@db-studio/sdk';
 
 class MyAuth extends IAuth {
 	async login() {
@@ -218,14 +218,14 @@ class MyAuth extends IAuth {
 	}
 }
 
-const directus = new Directus('https://example.directus.app', {
+const studio = new Studio('https://example.studio.app', {
 	auth: new MyAuth(),
 });
 ```
 
 ## Customize `storage`
 
-The storage is used to load and save token information. By default, Directus creates an instance of `storage` which
+The storage is used to load and save token information. By default, DB Studio creates an instance of `storage` which
 handles store information automatically.
 
 ```js
@@ -280,7 +280,7 @@ It is possible to provide a custom implementation by extending `BaseStorage`. Wh
 advanced situations, it is not needed for most use-cases.
 
 ```js
-import { BaseStorage, Directus } from '@db-studio/sdk';
+import { BaseStorage, Studio } from '@db-studio/sdk';
 
 class SessionStorage extends BaseStorage {
 	get(key) {
@@ -294,7 +294,7 @@ class SessionStorage extends BaseStorage {
 	}
 }
 
-const directus = new Directus('https://example.directus.app', {
+const studio = new Studio('https://example.studio.app', {
 	storage: new SessionStorage(),
 });
 ```
@@ -303,7 +303,7 @@ const directus = new Directus('https://example.directus.app', {
 
 Defines settings you want to customize regarding [Transport](#extend-transport).
 
-By default, Directus creates an instance of `Transport` which handles requests automatically. It uses
+By default, DB Studio creates an instance of `Transport` which handles requests automatically. It uses
 [`axios`](https://axios-http.com/) so it is compatible in both browsers and Node.js. With axios, it is also possible to
 handle upload progress (a downside of `fetch`).
 
@@ -374,7 +374,7 @@ different HTTP libraries. While this could be useful in certain advanced situati
 use-cases.
 
 ```js
-import { ITransport, Directus } from '@db-studio/sdk';
+import { ITransport, Studio } from '@db-studio/sdk';
 
 class MyTransport extends ITransport {
 	buildResponse() {
@@ -409,7 +409,7 @@ class MyTransport extends ITransport {
 	}
 }
 
-const directus = new Directus('https://example.directus.app', {
+const studio = new Studio('https://example.studio.app', {
 	transport: new MyTransport(),
 });
 ```
@@ -439,7 +439,7 @@ type MyCollections = {
 };
 
 // This is how you feed custom type information to Directus.
-const directus = new Directus<MyCollections>('https://example.directus.app');
+const studio = new Studio<MyCollections>('https://example.studio.app');
 
 // ...
 
@@ -450,12 +450,12 @@ const settings = await posts.singleton('settings').read();
 // typeof(settings) is a partial BlogSettings object
 ```
 
-You can also extend the Directus system type information by providing type information for system collections as well.
+You can also extend the DB Studio system type information by providing type information for system collections as well.
 
 ```ts
-import { Directus } from '@db-studio/sdk';
+import { Studio } from '@db-studio/sdk';
 
-// Custom fields added to Directus user collection.
+// Custom fields added to DB Studio user collection.
 type UserType = {
 	level: number;
 	experience: number;
@@ -463,23 +463,24 @@ type UserType = {
 
 type CustomTypes = {
 	/*
-	This type will be merged with Directus user type.
-	It's important that the naming matches a directus
+	This type will be merged with DB Studio user type.
+	It's important that the naming matches a studio
 	collection name exactly. Typos won't get caught here
 	since SDK will assume it's a custom user collection.
+	TODO: Update this once custom prefixes are implemented
 	*/
-	directus_users: UserType;
+	direcuts_users: UserType;
 };
 
-const directus = new Directus<CustomTypes>('https://example.directus.app');
+const studio = new Studio<CustomTypes>('https://example.studio.app');
 
-await directus.auth.login({
+await studio.auth.login({
 	email: 'admin@example.com',
 	password: 'password',
 });
 
-const me = await directus.users.me.read();
-// typeof me = partial DirectusUser & UserType;
+const me = await studio.users.me.read();
+// typeof me = partial DBStudioUser & UserType;
 
 // OK
 me.level = 42;
@@ -493,7 +494,7 @@ me.experience = 'high';
 ### Get current token
 
 ```ts
-await directus.auth.token;
+await studio.auth.token;
 ```
 
 ::: warning Async
@@ -517,16 +518,16 @@ await directus.auth.login({
 #### With static tokens
 
 ```js
-await directus.auth.static('static_token');
+await studio.auth.static('static_token');
 ```
 
 ### Refresh Auth Token
 
-By default, Directus will handle token refreshes. Although, you can handle this behavior manually by setting
+By default, DB Studio will handle token refreshes. Although, you can handle this behavior manually by setting
 [`autoRefresh`](#options.auth.autoRefresh) to `false`.
 
 ```js
-await directus.auth.refresh();
+await studio.auth.refresh();
 ```
 
 ::: tip Developing Locally
@@ -541,7 +542,7 @@ You can use a browser which does support this such as Firefox, or
 ### Logout
 
 ```js
-await directus.auth.logout();
+await studio.auth.logout();
 ```
 
 ### Request a Password Reset
@@ -550,13 +551,13 @@ By default, the address defined in `PUBLIC_URL` on `.env` file is used for the l
 the email:
 
 ```js
-await directus.auth.password.request('admin@example.com');
+await studio.auth.password.request('admin@example.com');
 ```
 
 But a custom address can be passed as second argument:
 
 ```js
-await directus.auth.password.request(
+await studio.auth.password.request(
 	'admin@example.com',
 	'https://myapp.com' // In this case, the link will be https://myapp.com?token=FEE0A...
 );
@@ -568,7 +569,7 @@ await directus.auth.password.request(
 ### Reset a Password
 
 ```js
-await directus.auth.password.reset('abc.def.ghi', 'n3w-p455w0rd');
+await studio.auth.password.reset('abc.def.ghi', 'n3w-p455w0rd');
 ```
 
 Note: The token passed in the first parameter is sent in an email to the user when using `request()`
@@ -582,17 +583,17 @@ You can get an instance of the item handler by providing the collection (and typ
 
 ```js
 // import { Directus, ID } from '@db-studio/sdk';
-const { Directus } = require('@wbce-d9/sdk');
+const { Studio } = require('@db-studio/sdk');
 
-const directus = new Directus('https://example.directus.app');
+const studio = new Directus('https://example.studio.app');
 
-const articles = directus.items('articles');
+const articles = studio.items('articles');
 ```
 
 > TypeScript
 
 ```ts
-import { Directus, ID } from '@db-studio/sdk';
+import { Studio, ID } from '@db-studio/sdk';
 
 // Map your collection structure based on its fields.
 type Article = {
@@ -608,19 +609,20 @@ type MyBlog = {
 	// [collection_name]: typescript_type
 	articles: Article;
 
-	// You can also extend Directus collection. The naming has
-	// to match a Directus system collection and it will be merged
+	// You can also extend DB Studio collection. The naming has
+	// to match a DB Studio system collection and it will be merged
 	// into the system spec.
+	// TODO: Update this once custom prefixes are implemented
 	directus_users: {
 		bio: string;
 	};
 };
 
 // Let the SDK know about your collection types.
-const directus = new Directus<MyBlog>('https://example.directus.app');
+const studio = new Studio<MyBlog>('https://example.studio.app');
 
 // typeof(article) is a partial "Article"
-await directus.items('articles').readOne(10);
+await studio.items('articles').readOne(10);
 
 // Error TS2322: "hello" is not assignable to type "boolean".
 // post.published = 'hello';
@@ -651,7 +653,7 @@ await articles.createMany([
 
 ```js
 await articles.readByQuery({
-	search: 'Directus',
+	search: 'DB Studio',
 	filter: {
 		date_published: {
 			_gte: '$NOW',
@@ -920,15 +922,15 @@ To upload a file you will need to send a `multipart/form-data` as body. On brows
 
 ```js
 /* index.js */
-import { Directus } from 'https://unpkg.com/@wbce-d9/sdk@latest/dist/sdk.esm.min.js';
+import { Studio } from 'https://unpkg.com/@db-studio/sdk@latest/dist/sdk.esm.min.js';
 
-const directus = new Directus('https://example.directus.app', {
+const studio = new Studio('https://example.directus.app', {
 	auth: {
 		staticToken: 'STATIC_TOKEN', // If you want to use a static token, otherwise check below how you can use email and password.
 	},
 });
 
-// await directus.auth.login({ email, password })
+// await studio.auth.login({ email, password })
 // If you want to use email and password, remove the staticToken above.
 
 const form = document.querySelector('#upload-file');
@@ -938,7 +940,7 @@ if (form && form instanceof HTMLFormElement) {
 		event.preventDefault();
 
 		const form = new FormData(event.target);
-		await directus.files.createOne(form);
+		await studio.files.createOne(form);
 	});
 }
 ```
@@ -963,9 +965,9 @@ When uploading a file from a NodeJS environment, you'll have to override the hea
 set:
 
 ```js
-import { Directus } from 'https://unpkg.com/@wbce-d9/sdk@latest/dist/sdk.esm.min.js';
+import { Studio } from 'https://unpkg.com/@wbce-d9/sdk@latest/dist/sdk.esm.min.js';
 
-const directus = new Directus('https://example.directus.app', {
+const studio = new Studio('https://example.studio.app', {
 	auth: {
 		staticToken: 'STATIC_TOKEN', // If you want to use a static token, otherwise check below how you can use email and password.
 	},
@@ -974,7 +976,7 @@ const directus = new Directus('https://example.directus.app', {
 const form = new FormData();
 form.append("file", fs.createReadStream("./to_upload.jpeg"));
 
-await directus.files.createOne(form, {}, {
+await studio.files.createOne(form, {}, {
   requestOptions: {
     headers: {
       ...form.getHeaders()
@@ -988,7 +990,7 @@ await directus.files.createOne(form, {}, {
 Example of [importing a file from a URL](/reference/files#import-a-file):
 
 ```js
-await directus.files.import({
+await studio.files.import({
 	url: 'http://www.example.com/example-image.jpg',
 });
 ```
@@ -996,7 +998,7 @@ await directus.files.import({
 Example of importing file with custom data:
 
 ```js
-await directus.files.import({
+await studio.files.import({
 	url: 'http://www.example.com/example-image.jpg',
 	data: {
 		title: 'My Custom File',
@@ -1007,85 +1009,85 @@ await directus.files.import({
 ## Folders
 
 ```js
-directus.folders;
+studio.folders;
 ```
 
-Same methods as `directus.items("directus_folders")`.
+Same methods as `studio.items("directus_folders")`.
 
 ## Permissions
 
 ```js
-directus.permissions;
+studio.permissions;
 ```
 
-Same methods as `directus.items("directus_permissions")`.
+Same methods as `studio.items("directus_permissions")`.
 
 ## Presets
 
 ```js
-directus.presets;
+studio.presets;
 ```
 
-Same methods as `directus.items("directus_presets")`.
+Same methods as `studio.items("directus_presets")`.
 
 ## Relations
 
 ```js
-directus.relations;
+studio.relations;
 ```
 
-Same methods as `directus.items("directus_relations")`.
+Same methods as `studio.items("directus_relations")`.
 
 ## Revisions
 
 ```js
-directus.revisions;
+studio.revisions;
 ```
 
-Same methods as `directus.items("directus_revisions")`.
+Same methods as `studio.items("directus_revisions")`.
 
 ## Roles
 
 ```js
-directus.roles;
+studio.roles;
 ```
 
-Same methods as `directus.items("directus_roles")`.
+Same methods as `studio.items("directus_roles")`.
 
 ## Settings
 
 ```js
-directus.settings;
+studio.settings;
 ```
 
-Same methods as `directus.items("directus_settings")`.
+Same methods as `studio.items("directus_settings")`.
 
 ## Server
 
 ### Ping the Server
 
 ```js
-await directus.server.ping();
+await studio.server.ping();
 ```
 
 ### Get Server/Project Info
 
 ```js
-await directus.server.info();
+await studio.server.info();
 ```
 
 ## Users
 
 ```js
-directus.users;
+studio.users;
 ```
 
-Same methods as `directus.items("directus_users")`, and:
+Same methods as `studio.items("directus_users")`, and:
 
 ### Invite a New User
 
 ```js
-await directus.users.invites.send('admin@example.com', 'fe38136e-52f7-4622-8498-112b8a32a1e2');
+await studio.users.invites.send('admin@example.com', 'fe38136e-52f7-4622-8498-112b8a32a1e2');
 ```
 
 The second parameter is the role of the user
@@ -1093,7 +1095,7 @@ The second parameter is the role of the user
 ### Accept a User Invite
 
 ```js
-await directus.users.invites.accept('<accept-token>', 'n3w-p455w0rd');
+await studio.users.invites.accept('<accept-token>', 'n3w-p455w0rd');
 ```
 
 The provided token is sent to the user's email
@@ -1101,25 +1103,25 @@ The provided token is sent to the user's email
 ### Enable Two-Factor Authentication
 
 ```js
-await directus.users.tfa.enable('my-password');
+await studio.users.tfa.enable('my-password');
 ```
 
 ### Disable Two-Factor Authentication
 
 ```js
-await directus.users.tfa.disable('691402');
+await studio.users.tfa.disable('691402');
 ```
 
 ### Get the Current User
 
 ```js
-await directus.users.me.read();
+await studio.users.me.read();
 ```
 
 Supports optional query:
 
 ```js
-await directus.users.me.read({
+await studio.users.me.read({
 	fields: ['last_access'],
 });
 ```
@@ -1127,13 +1129,13 @@ await directus.users.me.read({
 ### Update the Current Users
 
 ```js
-await directus.users.me.update({ first_name: 'Admin' });
+await studio.users.me.update({ first_name: 'Admin' });
 ```
 
 Supports optional query:
 
 ```js
-await directus.users.me.update({ first_name: 'Admin' }, { fields: ['last_access'] });
+await studio.users.me.update({ first_name: 'Admin' }, { fields: ['last_access'] });
 ```
 
 ## Utils
@@ -1141,31 +1143,31 @@ await directus.users.me.update({ first_name: 'Admin' }, { fields: ['last_access'
 ### Get a Random String
 
 ```js
-await directus.utils.random.string();
+await studio.utils.random.string();
 ```
 
 Supports an optional `length` (defaults to 32):
 
 ```js
-await directus.utils.random.string(50);
+await studio.utils.random.string(50);
 ```
 
 ### Generate a Hash for a Given Value
 
 ```js
-await directus.utils.hash.generate('My String');
+await studio.utils.hash.generate('My String');
 ```
 
 ### Verify if a Hash is Valid
 
 ```js
-await directus.utils.hash.verify('My String', '$argon2i$v=19$m=4096,t=3,p=1$A5uogJh');
+await studio.utils.hash.verify('My String', '$argon2i$v=19$m=4096,t=3,p=1$A5uogJh');
 ```
 
 ### Sort Items in a Collection
 
 ```js
-await directus.utils.sort('articles', 15, 42);
+await studio.utils.sort('articles', 15, 42);
 ```
 
 This will move item `15` to the position of item `42`, and move everything in between one "slot" up.
@@ -1173,7 +1175,7 @@ This will move item `15` to the position of item `42`, and move everything in be
 ### Revert to a Previous Revision
 
 ```js
-await directus.utils.revert(451);
+await studio.utils.revert(451);
 ```
 
 Note: The key passed is the primary key of the revision you'd like to apply.

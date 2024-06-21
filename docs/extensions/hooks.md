@@ -46,7 +46,7 @@ the event.
 
 Filter hooks act on the event's payload before the event is fired. They allow you to check, modify, or cancel an event.
 
-Below is an example of canceling a `create` event by throwing a standard Directus exception.
+Below is an example of canceling a `create` event by throwing a standard DB Studio exception.
 
 ```js
 export default ({ filter }, { exceptions }) => {
@@ -123,8 +123,8 @@ The callback function itself receives one parameter:
 
 ### Schedule
 
-Schedule hooks execute at certain points in time rather than when Directus performs a specific action. This is supported
-through [`node-cron`](https://www.npmjs.com/package/node-cron).
+Schedule hooks execute at certain points in time rather than when DB Studio performs a specific action. This is
+supported through [`node-cron`](https://www.npmjs.com/package/node-cron).
 
 To set up a scheduled event, provide a cron statement as the first parameter to the `schedule()` function. For example
 `schedule('15 14 1 * *', <...>)` (at 14:15 on day-of-month 1) or `schedule('5 4 * * sun', <...>)` (at 04:05 on Sunday).
@@ -329,19 +329,19 @@ import * as Sentry from '@sentry/node';
 import '@sentry/tracing';
 
 export default defineHook(({ init }, { env }) => {
-    const { SENTRY_DSN } = env;
-    Sentry.init({
-        dsn: SENTRY_DSN
-    });
-    
-    init('routes.before', ({ app }) => {
-        app.use(Sentry.Handlers.requestHandler());
-        console.log('-- Sentry Request Handler Added --');
-    });
+	const { SENTRY_DSN } = env;
+	Sentry.init({
+		dsn: SENTRY_DSN,
+	});
 
-    init('routes.custom.after', ({ app }) => {
-        app.use(Sentry.Handlers.errorHandler());
-        console.log('-- Sentry Error Handler Added --');
-    });
+	init('routes.before', ({ app }) => {
+		app.use(Sentry.Handlers.requestHandler());
+		console.log('-- Sentry Request Handler Added --');
+	});
+
+	init('routes.custom.after', ({ app }) => {
+		app.use(Sentry.Handlers.errorHandler());
+		console.log('-- Sentry Error Handler Added --');
+	});
 });
 ```

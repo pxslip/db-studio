@@ -1,24 +1,26 @@
 ---
-description: An introduction to the process, rules and guidelines that for all code contributions to DB Studio (Formerly Directus v9).
+description:
+  An introduction to the process, rules and guidelines that for all code contributions to DB Studio (Formerly Directus
+  v9).
 readTime: 6 min read
 ---
 
 # Contributing
 
-Heya! Welcome to DB Studio (Formerly Directus v9), and thank you for taking the time to contribute back to our project! ❤️ We want everybody to
-be able to contribute to DB Studio (Formerly Directus v9), no matter your background or expertise. In order to facilitate that, we've put
-together a couple tips and tricks below. Our team truly appreciates every single contributor, community member, GitHub
-star, pull-request, bug report, and feature request.
+Heya! Welcome to DB Studio (Formerly Directus v9), and thank you for taking the time to contribute back to our project!
+❤️ We want everybody to be able to contribute to DB Studio (Formerly Directus v9), no matter your background or
+expertise. In order to facilitate that, we've put together a couple tips and tricks below. Our team truly appreciates
+every single contributor, community member, GitHub star, pull-request, bug report, and feature request.
 
 ## Code of Conduct
 
-**The DB Studio (Formerly Directus v9) [Code of Conduct](https://github.com/pxslip/db-studio/blob/main/code_of_conduct.md) is one of the ways
-we put our values into practice. We expect all of our staff, contractors and contributors to know and follow this
-code.**
+**The DB Studio (Formerly Directus v9)
+[Code of Conduct](https://github.com/pxslip/db-studio/blob/main/code_of_conduct.md) is one of the ways we put our values
+into practice. We expect all of our staff, contractors and contributors to know and follow this code.**
 
-**Our contributors and maintainers work extremely hard to build DB Studio (Formerly Directus v9) as premium open-source software. Please be
-respectful of those efforts throughout our ecosystem. Trolling, harassing, insulting, or other unacceptable behavior by
-participants will not be tolerated.**
+**Our contributors and maintainers work extremely hard to build DB Studio (Formerly Directus v9) as premium open-source
+software. Please be respectful of those efforts throughout our ecosystem. Trolling, harassing, insulting, or other
+unacceptable behavior by participants will not be tolerated.**
 
 In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making
 participation in our project and community a harassment-free experience for everyone, regardless of age, body size,
@@ -51,8 +53,6 @@ other contributors to help you find the solution or fix. Consider adding a schem
 If you have a great idea for an improvement of the platform, or any other feedback, please make sure to open a new
 Discussion on our GitHub Discussions board: https://github.com/pxslip/db-studio/discussions
 
-
-
 ### Pull Requests
 
 #### Bug Fixes
@@ -63,10 +63,10 @@ have been triaged, accepted, and are ready to be implemented.
 
 #### Implementing Features
 
-With the continuous growth of DB Studio (Formerly Directus v9), more and more people are relying on DB Studio (Formerly Directus v9) for (critical) data workloads in
-various use cases. This means we need to be careful with any changes that might affect the stability, security,
-performance, or scalability of DB Studio (Formerly Directus v9). For this reason, it's important that any new feature is properly thought
-through and discussed before being implemented.
+With the continuous growth of DB Studio (Formerly Directus v9), more and more people are relying on DB Studio (Formerly
+Directus v9) for (critical) data workloads in various use cases. This means we need to be careful with any changes that
+might affect the stability, security, performance, or scalability of DB Studio (Formerly Directus v9). For this reason,
+it's important that any new feature is properly thought through and discussed before being implemented.
 
 Before you start writing code to implement your new feature idea, please read through and understand our triaging
 process for new features before diving in. While we encourage and appreciate every code contribution, please understand
@@ -87,13 +87,6 @@ item, be it a feature or otherwise.
 
 ### Reporting Security Vulnerabilities
 
-If you believe you have discovered a security issue within a DB Studio (Formerly Directus v9) product or service, please reach out to us
-directly over email: [db-studio@pxslip.com](mailto:db-studio@pxslip.com). We will then open a
+If you believe you have discovered a security issue within a DB Studio (Formerly Directus v9) product or service, please
+reach out to us directly over email: [db-studio@pxslip.com](mailto:db-studio@pxslip.com). We will then open a
 [GitHub Security Advisory](https://github.com/pxslip/db-studio/security/advisories) for tracking the fix.
-
-We value the members of the independent security research community who find security vulnerabilities and work with our
-team so that proper fixes can be issued to users. Our policy is to credit all researchers in the fix's release notes. In
-order to receive credit, security researchers must follow responsible disclosure practices, including:
-
-- They do not publish the vulnerability prior to the Directus team releasing a fix for it
-- They do not divulge exact details of the issue, e.g., through exploits or proof-of-concepts

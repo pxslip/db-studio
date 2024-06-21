@@ -1,5 +1,5 @@
 ---
-description: A glossary of key Directus terminology.
+description: A glossary of key DB Studio terminology.
 readTime: 15 min read
 ---
 
@@ -69,7 +69,7 @@ group data based on department, objective, business process or anything you choo
 
 Directus supports mirroring all the most widely used SQL databases, including PostgreSQL, MySQL, Microsoft SQL Server,
 SQLite, OracleDB, MariaDB, CockroachDB, and other variants. Each vendor has subtle (and sometimes not so subtle)
-differences in how they function, so Directus includes an abstraction layer that helps it avoid writing different code
+differences in how they function, so DB Studio includes an abstraction layer that helps it avoid writing different code
 for each type.
 
 This means there is also the possibility of supporting other datastores in the future, such as NoSQL options like
@@ -82,7 +82,7 @@ Displays are the smaller, read-only counterpart to [Interfaces](#interfaces), de
 displayed inline throughout the App.
 
 For example, you may have a "Status" field that uses a _Dropdown_ Interface on the Item Detail page, and a smaller
-_Badge_ Display when the field is referenced throughout the rest of the App. Directus includes many Displays
+_Badge_ Display when the field is referenced throughout the rest of the App. DB Studio includes many Displays
 out-of-the-box, below are the some key examples:
 
 - **Raw** — The exact value, straight from the API
@@ -141,7 +141,7 @@ is an excellent Digital Asset Management system.
 
 ### Material Icons
 
-Full list of icons [can be found here](https://fonts.google.com/icons). Directus supports both filled & outlined
+Full list of icons [can be found here](https://fonts.google.com/icons). DB Studio supports both filled & outlined
 variants of Material icons.
 
 ### Social Icons
@@ -193,8 +193,8 @@ connect data. For instance, if you have a `recipes` collection and an `ingredien
 ## Layouts
 
 Layouts determine how you view or interact with a Collection. In most cases, they offer a way to browse items based on a
-specific type of data, but can also be used to visualize or interact with data. Directus includes several Layout options
-out-of-the-box, each with different features and configuration options.
+specific type of data, but can also be used to visualize or interact with data. DB Studio includes several Layout
+options out-of-the-box, each with different features and configuration options.
 
 - **Table** — Works with any type of data, showing items as rows and their fields as columns.
 - **Cards** — Ideal for image data, this layout shows items as a grid of image cards.
@@ -299,7 +299,7 @@ purpose. [Learn more about Relationships](/configuration/data-model/relationship
 ## Revisions
 
 Revisions are created whenever an Item is updated. These alternate versions are tracked so that previous states can be
-recovered. Every change made to items in Directus is stored as a complete versioned snapshot and a set of specific
+recovered. Every change made to items in DB Studio is stored as a complete versioned snapshot and a set of specific
 changes made (the delta). The revisions system is tightly coupled to the activity logs system, with each revision linked
 to the activity event where it was created.
 
@@ -308,7 +308,7 @@ to the activity event where it was created.
 Roles define a specific set of access permissions, and are the primary organizational structure for Users within the
 platform. You can create an unlimited number of roles, so organize your users in whatever way feels most appropriate.
 
-During the installation process, Directus automatically creates an "Administrators" Role, which is used to provide the
+During the installation process, DB Studio automatically creates an "Administrators" Role, which is used to provide the
 initial admin user with full platform access. However this is just a _normal_ role, and so it can still be updated,
 renamed, or even deleted. Keep in mind that your project must maintain at least one role with Admin Access at all times.
 
@@ -331,7 +331,7 @@ There is also a "Public" role that determines access for unauthenticated access.
 
 ## Storage Adapters
 
-Storage adapters allow project files to be stored in different locations or services. By default, Directus includes the
+Storage adapters allow project files to be stored in different locations or services. By default, DB Studio includes the
 following drivers:
 
 - **Local Filesystem** — The default, any file system location or network-attached storage
@@ -369,7 +369,7 @@ cause data loss, so types are locked within the platform after a field is create
 
 Directus uses its built-in database abstraction to properly support all the different SQL vendors. However, these
 vendors do not share support for the same data types, instead, each SQL vendor maintains their own list. To standardize
-all of these differences, Directus has a single _superset_ of types that map to the vendor-specific ones.
+all of these differences, DB Studio has a single _superset_ of types that map to the vendor-specific ones.
 
 - **String** — A shorter set of characters with a configurable max length
 - **Text** — A longer set of characters with no real-world max length

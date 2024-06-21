@@ -6,7 +6,7 @@ pageClass: page-reference
 
 # Activity
 
-> All events within Directus are tracked and stored in the activities collection. This gives you full accountability
+> All events within DB Studio are tracked and stored in the activities collection. This gives you full accountability
 > over everything that happens. [Learn more about Activity](/getting-started/glossary#activity).
 
 ---

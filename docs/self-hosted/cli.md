@@ -1,15 +1,15 @@
 ---
 description:
-  Directus has two command line interfaces (CLI) that you can use for various actions, one for server-side actions and
-  another to interact with a Directus instance as you would with an SDK
+  DB Studio has two command line interfaces (CLI) that you can use for various actions, one for server-side actions and
+  another to interact with a DB Studio instance as you would with an SDK
 readTime: 7 min read
 ---
 
 # Command Line Interface
 
-> Directus has two command line interfaces (CLI) that you can use for various actions. One is used for server-side
+> DB Studio has two command line interfaces (CLI) that you can use for various actions. One is used for server-side
 > actions that relate to your on-prem instance, like migrating the database or resetting a user, while the other allows
-> you to interact with a Directus instance as you would with an SDK.
+> you to interact with a DB Studio instance as you would with an SDK.
 
 ## Requirements
 
@@ -17,7 +17,7 @@ readTime: 7 min read
 
 ## Server
 
-For server-side CLI, all functionality can be accessed by running `npx directus <command>` in your project folder.
+For server-side CLI, all functionality can be accessed by running `pnpm exec <command>` in your project folder.
 
 ### Initialize a New Project
 
@@ -60,7 +60,7 @@ custom migration or an external service, for example).
 npx directus database install
 ```
 
-Installs the initial Directus system tables on an empty database. Used internally by `bootstrap`.
+Installs the initial DB Studio system tables on an empty database. Used internally by `bootstrap`.
 
 It should be used only in specific cases, e.g. when you want to run something between `install` and `migrate`. You
 probably should call `directus database migrate:latest` afterwards manually.
@@ -75,13 +75,13 @@ npx directus database migrate:up
 npx directus database migrate:down
 ```
 
-Migrate the database up/down to match the versions of Directus. Once you update Directus itself, make sure to run
-`npx directus database migrate:latest` (or `npx directus bootstrap`) to update your database.
+Migrate the database up/down to match the versions of Directus. Once you update DB Studio itself, make sure to run
+`pnpm exec database migrate:latest` (or `pnpm exec bootstrap`) to update your database.
 
 ### Migrate Schema to a different Environment
 
 This allows you to do things like migrate a schema from development to production. To move your configured data model
-between Directus instances, you can use the schema "snapshot" and "apply" commands.
+between DB Studio instances, you can use the schema "snapshot" and "apply" commands.
 
 #### Snapshot the Data Model
 
@@ -119,7 +119,7 @@ your server to keep a schema backup.
 #### Applying a Snapshot
 
 To make a different instance up to date with the latest changes in your data model, you can apply the snapshot. By
-applying the snapshot, Directus will auto-detect the changes required to make the current instance up to date with the
+applying the snapshot, DB Studio will auto-detect the changes required to make the current instance up to date with the
 proposed data model in the snapshot file, and will run the required migrations to the database to make it match the
 snapshot.
 
@@ -187,30 +187,31 @@ npx directus count <collection-name>
 
 ## Client
 
-For the client-side CLI, all functionality can be accessed by running `npx directusctl <command>`. You can also install
-`@wbce-d9/cli` on your project dependencies or globally on your machine. Note that if you run `directusctl` (installed
-globally) in a folder containing a project that has a version of `@wbce-d9/cli` installed, the running global CLI will
+For the client-side CLI, all functionality can be accessed by running `npx studioctl <command>`. You can also install
+`@db-studio/cli` on your project dependencies or globally on your machine. Note that if you run `studioctl` (installed
+globally) in a folder containing a project that has a version of `@db-studio/cli` installed, the running global CLI will
 forward it's execution to the local installed version instead.
 
 ### Help & Documentation
 
 The documentation for all commands can be accessed through the CLI itself. You can list all the available commands
-through `directusctl --help` command. If you want help for a specific command you can use `directusctl <command> --help`
+through `studioctl --help` command. If you want help for a specific command you can use `studioctl <command> --help`
 instead.
 
 ### Instances
 
-Most client-side CLI commands needs a running Directus instance in order to work. To connect the CLI to an instance, you
-can use `directusctl instance connect` command. These instance's configs are going to be saved on `~/.directus` folder.
+Most client-side CLI commands needs a running DB Studio instance in order to work. To connect the CLI to an instance,
+you can use `studioctl instance connect` command. These instance's configs are going to be saved on `~/.directus`
+folder.
 
-To manage the connected instances, you can use `directusctl instance <command>` commands.
+To manage the connected instances, you can use `studioctl instance <command>` commands.
 
 #### Selecting instances
 
 By default, commands will try using an instance named `default` when executing commands.
 
 If you want to change which instance you want to use, either pass `--instance <name>` to the command, or configure
-`instance` variable on your project's Directus config file.
+`instance` variable on your project's DB Studio config file.
 
 For example:
 
@@ -226,10 +227,10 @@ The CLI is designed with ease of use and automation in mind, this means that you
 by setting how you want the data to be written to the terminal. We currently support three formats, `table` (the default
 one), `json` and `yaml`.
 
-This makes it easier to parse and use data from Directus with other tools like `jq`, `yq`, `grep` or any other tools
+This makes it easier to parse and use data from DB Studio with other tools like `jq`, `yq`, `grep` or any other tools
 that accepts data from `stdin`
 
-It's also worth mentioning that everything is data. Try for example running `directusctl --help --format=json`.
+It's also worth mentioning that everything is data. Try for example running `studioctl --help --format=json`.
 
 #### Table
 
@@ -254,5 +255,5 @@ Useful when you need to parse data using tools like `jq` for example.
 
 <!-- ### Extending
 
-To find how you can extend the CLI and write custom commands, check how we make Directus highly extensible on our
+To find how you can extend the CLI and write custom commands, check how we make DB Studio highly extensible on our
 [extensions overview page](/concepts/extensions). -->

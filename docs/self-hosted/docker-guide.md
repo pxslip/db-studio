@@ -4,20 +4,19 @@ readTime: 3 min read
 ---
 
 # Docker Guide
-::: warning Out of Date Content
-TODO: The Docker hosting guide needs to be updated
-:::
+
+::: warning Out of Date Content TODO: The Docker hosting guide needs to be updated :::
 
 ::: info Non-Docker Guides
 
 We only publish and maintain self hosting guides using Docker as this removes many environment-specific configuration
 problems. If you can't or don't want to use Docker, we also publish an
-[npm package](https://www.npmjs.com/package/directus) without guides.
+[npm package](https://www.npmjs.com/package/@db-studio/db-studio) without guides.
 
 :::
 
-Directus is published to [Docker Hub](https://hub.docker.com/r/directus/directus) under `directus/directus`. To use the
-latest Directus image from Docker Hub, run:
+Directus is published to [Docker Hub](https://hub.docker.com/r/db-studio/db-studio) under `db-studio/db-studio`. To use
+the latest DB Studio image from Docker Hub, run:
 
 ```bash
 # Make sure to change sensitive values (KEY, SECRET, ...) in production
@@ -25,12 +24,12 @@ docker run \
   -p 8055:8055 \
   -e KEY=255d861b-5ea1-5996-9aa3-922530ec40b1 \
   -e SECRET=6116487b-cda1-52c2-b5b5-c8022c45e263 \
-  directus/directus
+  db-studio/db-studio
 ```
 
 ### Installing Specific Versions
 
-To stick to a more specific version of Directus you can use one of the following tags:
+To stick to a more specific version of DB Studio you can use one of the following tags:
 
 - Full version, e.g. `9.0.0`
 - Minor releases, e.g. `9.0`
@@ -44,7 +43,7 @@ docker run \
   -p 8055:8055 \
   -e KEY=255d861b-5ea1-5996-9aa3-922530ec40b1 \
   -e SECRET=6116487b-cda1-52c2-b5b5-c8022c45e263 \
-  directus/directus:9.0.0
+  db-studio/db-studio:9.0.0
 ```
 
 ### Configure Admin User
@@ -54,7 +53,7 @@ email/password for this first user, pass the following env vars:
 
 ```bash
 ADMIN_EMAIL="admin@example.com"
-ADMIN_PASSWORD="d1r3ctu5"
+ADMIN_PASSWORD="secret"
 ```
 
 ## Persistence
@@ -62,13 +61,13 @@ ADMIN_PASSWORD="d1r3ctu5"
 Containers are ephemeral, and this means that whenever you stop a container, all the data associated with it is going to
 be removed [unless you persist them](https://docs.docker.com/storage) when creating your container.
 
-Directus image by default
+DB Studio image by default
 [will use the following locations](https://github.com/pxslip/db-studio/blob/main/docker/Dockerfile#L56-L60) for data
 persistence (note that these can be changed through environment variables)
 
-- `/directus/uploads` for uploads
-- `/directus/database` (only when using SQLite and not configured to a different folder)
-- `/directus/extensions` for loading extensions
+- `/studio/uploads` for uploads
+- `/studio/database` (only when using SQLite and not configured to a different folder)
+- `/studio/extensions` for loading extensions
 
 ## Docker Compose
 
@@ -86,34 +85,34 @@ services:
     volumes:
       - ./data/database:/var/lib/postgresql/data
     networks:
-      - directus
+      - studio
     environment:
-      POSTGRES_USER: 'directus'
-      POSTGRES_PASSWORD: 'directus'
-      POSTGRES_DB: 'directus'
+      POSTGRES_USER: 'studio'
+      POSTGRES_PASSWORD: 'studio'
+      POSTGRES_DB: 'studio'
 
   cache:
     container_name: cache
     image: redis:6
     networks:
-      - directus
+      - studio
 
-  directus:
-    container_name: directus
-    image: directus/directus:latest
+  studio:
+    container_name: studio
+    image: studio/studio:latest
     ports:
       - 8055:8055
     volumes:
-      # By default, uploads are stored in /directus/uploads
+      # By default, uploads are stored in /studio/uploads
       # Always make sure your volumes matches the storage root when using
       # local driver
-      - ./uploads:/directus/uploads
+      - ./uploads:/studio/uploads
       # Make sure to also mount the volume when using SQLite
-      # - ./database:/directus/database
+      # - ./database:/studio/database
       # If you want to load extensions from the host
-      # - ./extensions:/directus/extensions
+      # - ./extensions:/studio/extensions
     networks:
-      - directus
+      - studio
     depends_on:
       - cache
       - database
@@ -124,9 +123,9 @@ services:
       DB_CLIENT: 'pg'
       DB_HOST: 'database'
       DB_PORT: '5432'
-      DB_DATABASE: 'directus'
-      DB_USER: 'directus'
-      DB_PASSWORD: 'directus'
+      DB_DATABASE: 'studio'
+      DB_USER: 'studio'
+      DB_PASSWORD: 'studio'
 
       CACHE_ENABLED: 'true'
       CACHE_STORE: 'redis'
@@ -136,21 +135,21 @@ services:
       ADMIN_PASSWORD: 'd1r3ctu5'
 
       # Make sure to set this in production
-      # (see https://docs.directus.io/self-hosted/config-options#general)
-      # PUBLIC_URL: 'https://directus.example.com'
+      # (see https://pxslip.github.io/db-studio/self-hosted/config-options#general)
+      # PUBLIC_URL: 'https://studio.example.com'
 
 networks:
-  directus:
+  studio:
 ```
 
 ### Updating With Docker Compose
 
-If you are not using the `latest` tag for the Directus image you need to adjust your `docker-compose.yml` file to
+If you are not using the `latest` tag for the DB Studio image you need to adjust your `docker-compose.yml` file to
 increment the tag version number, e.g.:
 
 ```diff
--   image: directus/directus:9.0.0-rc.101
-+   image: directus/directus:9.0.0
+-   image: db-studio/db-studio:9.0.0-rc.101
++   image: db-studio/db-studio:9.0.0
 ```
 
 You can then issue the following two commands (from your docker-compose root):
@@ -171,7 +170,7 @@ extending from the official image and installing the packages there.
 First create a file called `Dockerfile` with a content like this:
 
 ```Dockerfile
-FROM directus/directus:9.25.2
+FROM db-studio/db-studio:latest
 
 USER root
 RUN corepack enable \
@@ -184,14 +183,14 @@ RUN pnpm install moment uuid
 Then build the image based on that file:
 
 ```bash
-docker build -t my-custom-directus-image .
+docker build -t my-custom-studio-image .
 ```
 
 And update the image reference in the `docker-compose.yml` file:
 
 ```diff
--    image: directus/directus:latest
-+    image: my-custom-directus-image:latest
+-    image: db-studio/db-studio:latest
++    image: my-custom-studio-image:latest
 ```
 
 :::tip Don't forget to provide `FLOWS_EXEC_ALLOWED_MODULES` variable
@@ -204,13 +203,13 @@ In your `docker-compose.yml` file, you will need to add:
 ```
 
 For more information, please see the config section on
-[Flows](https://docs.directus.io/self-hosted/config-options.html#flows)
+[Flows](https://pxslip.github.io/db-studio/self-hosted/config-options.html#flows)
 
 :::
 
 ## Supported Databases
 
-The Directus Docker Image contains all optional dependencies supported in the API. This means the Docker image can be
+The DB Studio Docker Image contains all optional dependencies supported in the API. This means the Docker image can be
 used with most of the supported databases and storage adapters without having to create a custom image.
 
 To run Directus, you currently need one of the following databases:
@@ -234,7 +233,7 @@ to be enabled\
 ::: warning OracleDB
 
 OracleDB's Node client (`node-oracledb`) requires a couple more native dependencies, and specific configurations in
-order to run. The official Directus Docker image does not include these dependencies. See
+order to run. The official DB Studio Docker image does not include these dependencies. See
 [https://blogs.oracle.com/opal/dockerfiles-for-node-oracledb-are-easy-and-simple](https://blogs.oracle.com/opal/dockerfiles-for-node-oracledb-are-easy-and-simple)
 for more information on what to include for OracleDB.
 

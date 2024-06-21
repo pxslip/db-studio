@@ -5,7 +5,7 @@ readTime: 2 min read
 
 # Custom Migrations
 
-> Directus allows adding custom migration files that run whenever the `directus database migrate:*` commands are
+> DB Studio allows adding custom migration files that run whenever the `studio database migrate:*` commands are
 > executed. All migrations must reside in the `extensions/migrations` folder.
 
 ## File Name
@@ -49,23 +49,23 @@ what you're doing and backup your database before adding these migrations.
 
 :::
 
-## Migrations and Directus schema
+## Migrations and DB Studio schema
 
-Migrations can be used to manage the contents of Directus collections (e.g. initial hydration). In order to do it, you
+Migrations can be used to manage the contents of DB Studio collections (e.g. initial hydration). In order to do it, you
 must ensure that the schema is up to date before running your migrations.
 
-`directus database migrate:latest` runs the required Directus internal migrations and the migrations from `migrations`
+`studio database migrate:latest` runs the required DB Studio internal migrations and the migrations from `migrations`
 directory. In general, you need the following flow:
 
 ```sh
 # Option 1
-npx directus bootstrap
-npx directus schema apply ./path/to/snapshot.yaml
+npx studio bootstrap
+npx studio schema apply ./path/to/snapshot.yaml
 
 # Option 2 - without bootstrap, you must ensure that you run all required `bootstrap` tasks
-npx directus database install
-npx directus database migrate:latest
-npx directus schema apply ./path/to/snapshot.yaml
+npx studio database install
+npx studio database migrate:latest
+npx studio schema apply ./path/to/snapshot.yaml
 ```
 
 Take notice here - to comply with this flow, `migrations` directory **must not contain** tasks that modify the contents
