@@ -30,7 +30,6 @@
 		"url": "https://github.com/pxslip/db-studio.git",
 		"directory": "api"
 	},
-	"funding": "https://github.com/pxslip/db-studio?sponsor=1",
 	"license": "GPL-3.0-only",
 	"exports": {
 		".": "./dist/index.js",
