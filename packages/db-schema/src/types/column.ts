@@ -2,6 +2,7 @@ export interface Column {
 	name: string;
 	table: string;
 	data_type: string;
+	//TODO: this should probably be string | number | boolean | null, maybe more types?
 	default_value: string | null;
 	max_length: number | null;
 	numeric_precision: number | null;

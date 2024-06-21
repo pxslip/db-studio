@@ -10,6 +10,8 @@ const program = new Command();
 program.name('directus-extension').usage('[command] [options]');
 program.version(getSdkVersion(), '-v, --version');
 
+// TODO: Would be worth adding a list of available types to the command output
+
 program
 	.command('create')
 	.arguments('<type> <name>')
