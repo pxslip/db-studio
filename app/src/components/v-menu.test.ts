@@ -39,16 +39,21 @@ test('Mount component', () => {
 	expect(wrapper.html()).toMatchSnapshot();
 });
 
-test('should not have click event listener when trigger is not "click"', () => {
+test('should not appear when clicked if the trigger is not "click"', async () => {
 	const wrapper = mount(VMenu, {
 		global,
 	});
 
-	const vMenuListeners = (wrapper.find('.v-menu').element as any)._vei;
-	expect(vMenuListeners).toBeUndefined();
+	const menu = wrapper.find<HTMLDivElement>('.v-menu');
+	const popperBefore = wrapper.findComponent(TransitionBounce).find('.v-menu-popper');
+	expect(popperBefore.exists()).toBeFalsy();
+	await menu.trigger('click');
+	// find the menu item that should _NOT_ exist and assert that
+	const popperAfter = wrapper.findComponent(TransitionBounce).find('.v-menu-popper');
+	expect(popperAfter.exists()).toBeFalsy();
 });
 
-test('should have click event listener when trigger is "click"', () => {
+test('menu should appear when clicked if the trigger is "click"', async () => {
 	const wrapper = mount(VMenu, {
 		props: {
 			trigger: 'click',
@@ -56,11 +61,16 @@ test('should have click event listener when trigger is "click"', () => {
 		global,
 	});
 
-	const vMenuListeners = (wrapper.find('.v-menu').element as any)._vei;
-	expect(vMenuListeners).toHaveProperty('onClick');
+	const menu = wrapper.find<HTMLDivElement>('.v-menu');
+	const popperBefore = wrapper.findComponent(TransitionBounce).find('.v-menu-popper');
+	expect(popperBefore.exists()).toBeFalsy();
+	await menu.trigger('click');
+	// find the menu item that should _NOT_ exist and assert that
+	const popperAfter = wrapper.findComponent(TransitionBounce).find('.v-menu-popper');
+	expect(popperAfter.exists()).not.toBeFalsy();
 });
 
-test('should not have click event listener when closeOnContentClick prop is false', () => {
+test('should not have click event listener when closeOnContentClick prop is false', async () => {
 	const wrapper = mount(VMenu, {
 		props: {
 			modelValue: true, // make it open in the beginning to ensure '.v-menu-content' is in the dom
@@ -69,11 +79,13 @@ test('should not have click event listener when closeOnContentClick prop is fals
 		global,
 	});
 
-	const vMenuContentListeners = (wrapper.getComponent(TransitionBounce).find('.v-menu-content').element as any)._vei;
-	expect(vMenuContentListeners).toBeUndefined();
+	//TODO: This makes me feel like pulling .v-menu-popper out of the v-menu component and into its own, more testable, component
+	const popper = wrapper.getComponent(TransitionBounce).find('.v-menu-popper');
+	const menuContent = popper.find('.v-menu-content');
+	expect(menuContent.element._listeners.click).not.toBeDefined();
 });
 
-test('should have click event listener when closeOnContentClick prop is true', () => {
+test('should have click event listener when closeOnContentClick prop is true', async () => {
 	const wrapper = mount(VMenu, {
 		props: {
 			modelValue: true, // make it open in the beginning to ensure '.v-menu-content' is in the dom
@@ -82,8 +94,9 @@ test('should have click event listener when closeOnContentClick prop is true', (
 		global,
 	});
 
-	const vMenuContentListeners = (wrapper.getComponent(TransitionBounce).find('.v-menu-content').element as any)._vei;
-	expect(vMenuContentListeners).toHaveProperty('onClick');
+	const popper = wrapper.getComponent(TransitionBounce).find('.v-menu-popper');
+	const menuContent = popper.find('.v-menu-content');
+	expect(menuContent.element._listeners.click).toBeDefined();
 });
 
 test('should not have pointerenter and pointerleave event listener when trigger is not "hover"', () => {
@@ -94,14 +107,13 @@ test('should not have pointerenter and pointerleave event listener when trigger 
 		global,
 	});
 
-	const activatorListeners = (wrapper.find({ ref: 'activator' }).element as any)._vei;
-	expect(activatorListeners).toBeUndefined();
-	expect(activatorListeners).toBeUndefined();
+	const activatorListeners = wrapper.find({ ref: 'activator' }).element._listeners;
+	expect(activatorListeners).toBe({});
 
 	// we need to use getComponent because it's teleported
-	const vMenuContentListeners = (wrapper.getComponent(TransitionBounce).find('.v-menu-content').element as any)._vei;
-	expect(vMenuContentListeners).not.toHaveProperty('onPointerenter');
-	expect(vMenuContentListeners).not.toHaveProperty('onPointerleave');
+	const vMenuContentListeners = wrapper.getComponent(TransitionBounce).find('.v-menu-content').element;
+	expect(vMenuContentListeners._listeners).not.toHaveProperty('onPointerenter');
+	expect(vMenuContentListeners._listeners).not.toHaveProperty('onPointerleave');
 });
 
 test('should have pointerenter and pointerleave event listener when trigger is "hover"', () => {
