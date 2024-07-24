@@ -17,22 +17,22 @@ import { LocalAuthDriver } from './local.js';
 
 export interface UserPayload {
 	provider: string;
-	first_name: any;
-	last_name: any;
-	email: any;
+	first_name: unknown;
+	last_name: unknown;
+	email: unknown;
 	external_identifier: string;
 	role: string;
-	auth_data: any;
+	auth_data: unknown;
 }
 
 export abstract class BaseOAuthDriver extends LocalAuthDriver {
 	abstract getClient(): Promise<Client>;
 	abstract getredirectUrl(): string;
 	abstract getUserService(): UsersService;
-	abstract getConfig(): Record<string, any>;
+	abstract getConfig(): Record<string, unknown>;
 	abstract getClientName(): string;
 	abstract getTokenSetAndUserInfo(
-		payload: Record<string, any>
+		payload: Record<string, unknown>,
 	): Promise<[TokenSet, Record<string, unknown>, UserPayload]>;
 
 	generateCodeVerifier(): string {
@@ -45,7 +45,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 		return user?.id;
 	}
 
-	override async getUserID(payload: Record<string, any>): Promise<string> {
+	override async getUserID(payload: Record<string, unknown>): Promise<string> {
 		if (!payload['code'] || !payload['codeVerifier'] || !payload['state']) {
 			logger.warn(`[${this.getClientName()}] No code, codeVerifier or state in payload`);
 			throw new InvalidCredentialsException();
@@ -78,7 +78,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 					provider: this.getConfig()['provider'],
 					providerPayload: { accessToken: tokenSet.access_token, userInfo },
 				},
-				{ database: getDatabase(), schema: this.schema, accountability: null }
+				{ database: getDatabase(), schema: this.schema, accountability: null },
 			);
 
 			// Update user to update refresh_token and other properties that might have changed
@@ -98,7 +98,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 		// Is public registration allowed?
 		if (!allowPublicRegistration || !isEmailVerified) {
 			logger.warn(
-				`[${this.getClientName()}] User doesn't exist, and public registration not allowed for provider "${provider}"`
+				`[${this.getClientName()}] User doesn't exist, and public registration not allowed for provider "${provider}"`,
 			);
 
 			throw new InvalidCredentialsException();
@@ -114,7 +114,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 				provider: this.getConfig()['provider'],
 				providerPayload: { accessToken: tokenSet.access_token, userInfo },
 			},
-			{ database: getDatabase(), schema: this.schema, accountability: null }
+			{ database: getDatabase(), schema: this.schema, accountability: null },
 		);
 
 		try {
@@ -156,7 +156,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 				});
 
 				logger.info(`[${this.getClientName()}] Session closed for user.`);
-			} catch (e: any) {
+			} catch (e: unknown) {
 				throw this.handleError(e);
 			}
 		} else {
@@ -190,7 +190,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 						auth_data: JSON.stringify({ refreshToken: tokenSet.refresh_token }),
 					});
 				}
-			} catch (e: any) {
+			} catch (e: unknown) {
 				throw this.handleError(e);
 			}
 		} else {
@@ -200,7 +200,7 @@ export abstract class BaseOAuthDriver extends LocalAuthDriver {
 		}
 	}
 
-	handleError = (e: any) => {
+	handleError = (e: unknown) => {
 		if (e instanceof errors.OPError) {
 			if (e.error === 'invalid_grant') {
 				// Invalid token

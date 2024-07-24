@@ -12,6 +12,14 @@ export default tseslint.config(
 	...vueEslint.configs['flat/recommended'],
 	prettierEslintConfig,
 	{
+		files: ['*.vue', '**/*.vue'],
+		languageOptions: {
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+			},
+		},
+	},
+	{
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -30,6 +38,7 @@ export default tseslint.config(
 					'ts-nocheck': true,
 				},
 			],
+			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
 		},
 	},
 );

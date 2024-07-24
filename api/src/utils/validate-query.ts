@@ -96,6 +96,7 @@ function validateFilter(filter: Query['filter']) {
 		} else if (Array.isArray(nested) === false) {
 			validateFilterPrimitive(nested, '_eq');
 		} else {
+			// @ts-expect-error TS2345: This branch doesn't make sense, nested cannot be an object or array, so what is it?
 			validateFilter(nested);
 		}
 	}
@@ -117,7 +118,7 @@ function validateFilterPrimitive(value: any, key: string) {
 
 	if (typeof value === 'string' && value.length === 0) {
 		throw new InvalidQueryException(
-			`You can't filter for an empty string in "${key}". Use "_empty" or "_nempty" instead`
+			`You can't filter for an empty string in "${key}". Use "_empty" or "_nempty" instead`,
 		);
 	}
 
