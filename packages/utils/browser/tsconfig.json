@@ -1,10 +1,6 @@
 {
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"lib": ["es2022", "DOM"],
-		"types": [],
-		"outDir": "../dist/browser",
-		"composite": true
-	},
-	"include": ["."]
+		"lib": ["DOM"]
+	}
 }
