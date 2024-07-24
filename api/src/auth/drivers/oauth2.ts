@@ -47,7 +47,7 @@ export class OAuth2AuthDriver extends BaseOAuthDriver {
 	}
 
 	constructor(options: AuthDriverOptions, config: Record<string, any>) {
-		super(options, config);
+		super(options);
 
 		const { authorizeUrl, accessUrl, profileUrl, clientId, clientSecret, ...additionalConfig } = config;
 
@@ -71,7 +71,7 @@ export class OAuth2AuthDriver extends BaseOAuthDriver {
 		const clientOptionsOverrides = getConfigFromEnv(
 			`AUTH_${config['provider'].toUpperCase()}_CLIENT_`,
 			[`AUTH_${config['provider'].toUpperCase()}_CLIENT_ID`, `AUTH_${config['provider'].toUpperCase()}_CLIENT_SECRET`],
-			'underscore'
+			'underscore',
 		);
 
 		this.client = new issuer.Client({
@@ -104,7 +104,7 @@ export class OAuth2AuthDriver extends BaseOAuthDriver {
 	}
 
 	async getTokenSetAndUserInfo(
-		payload: Record<string, any>
+		payload: Record<string, any>,
 	): Promise<[TokenSet, Record<string, unknown>, UserPayload]> {
 		let tokenSet;
 		let userInfo;
@@ -113,7 +113,7 @@ export class OAuth2AuthDriver extends BaseOAuthDriver {
 			tokenSet = await this.client.oauthCallback(
 				this.redirectUrl,
 				{ code: payload['code'], state: payload['state'] },
-				{ code_verifier: payload['codeVerifier'], state: generators.codeChallenge(payload['codeVerifier']) }
+				{ code_verifier: payload['codeVerifier'], state: generators.codeChallenge(payload['codeVerifier']) },
 			);
 
 			userInfo = await this.client.userinfo(tokenSet.access_token!);
@@ -165,7 +165,7 @@ export function createOAuth2AuthRouter(providerName: string): Router {
 				{
 					expiresIn: '5m',
 					issuer: 'directus',
-				}
+				},
 			);
 
 			res.cookie(`oauth2.${providerName}`, token, {
@@ -175,7 +175,7 @@ export function createOAuth2AuthRouter(providerName: string): Router {
 
 			return res.redirect(provider.generateAuthUrl(codeVerifier, prompt));
 		},
-		respond
+		respond,
 	);
 
 	router.post(
@@ -184,7 +184,7 @@ export function createOAuth2AuthRouter(providerName: string): Router {
 		(req, res) => {
 			res.redirect(303, `./callback?${new URLSearchParams(req.body)}`);
 		},
-		respond
+		respond,
 	);
 
 	router.get(
@@ -268,7 +268,7 @@ export function createOAuth2AuthRouter(providerName: string): Router {
 
 			next();
 		}),
-		respond
+		respond,
 	);
 
 	return router;
