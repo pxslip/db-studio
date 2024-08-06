@@ -1,13 +1,32 @@
 {
-  "name": "@db-studio/config",
-  "version": "1.0.0",
-  "description": "Configuration files for DB Studio (formerly Directus v9) packages",
-  "main": "index.js",
-  "keywords": [
-    "tsconfig"
-  ],
-  "license": "MIT",
-  "files": [
-    "./tsconfig/node18-esm.json"
-  ]
+	"name": "@db-studio/config",
+	"version": "1.0.0",
+	"description": "Configuration files for DB Studio (formerly Directus v9) packages",
+	"type": "module",
+	"keywords": [
+		"tsconfig"
+	],
+	"license": "MIT",
+	"files": [
+		"./tsconfig/node18-esm.json",
+		"./eslint/index.js"
+	],
+	"exports": {
+		"./tsconfig.json": "./tsconfig/node22.json",
+		"./tsconfig/node18-esm": "./tsconfig/node18-esm.json",
+		"./node18.tsconfig.json": "./tsconfig/node18-esm.json",
+		"./node22.tsconfig.json": "./tsconfig/node22.json",
+		"./eslint.js": "./eslint/index.js"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.7.0",
+		"@tsconfig/node18": "^18.2.4",
+		"@tsconfig/node22": "^22.0.0",
+		"@tsconfig/recommended": "^1.0.7",
+		"@types/eslint__js": "^8.42.3",
+		"eslint-config-prettier": "^8.10.0",
+		"eslint-plugin-vue": "^9.27.0",
+		"globals": "^15.8.0",
+		"typescript-eslint": "^7.16.1"
+	}
 }

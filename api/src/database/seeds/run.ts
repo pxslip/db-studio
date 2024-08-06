@@ -64,7 +64,8 @@ export default async function runSeed(database: Knex): Promise<void> {
 				} else if (columnInfo.type?.startsWith('geometry')) {
 					column = helpers.st.createColumn(tableBuilder, { field: columnName, type: columnInfo.type } as Field);
 				} else {
-					// @ts-ignore
+					// TODO: this could be removed with a type-guard that narrows the type to not include the geometry types?
+					// @ts-expect-error TS7053: The geometry types are handles in the previous branch, TS doesn't know that
 					column = tableBuilder[columnInfo.type!](columnName);
 				}
 

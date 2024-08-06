@@ -46,7 +46,7 @@ export class LDAPAuthDriver extends AuthDriver {
 	config: Record<string, any>;
 
 	constructor(options: AuthDriverOptions, config: Record<string, any>) {
-		super(options, config);
+		super(options);
 
 		const { bindDn, bindPassword, userDn, provider, clientUrl } = config;
 
@@ -117,7 +117,7 @@ export class LDAPAuthDriver extends AuthDriver {
 	private async fetchUserInfo(
 		baseDn: string,
 		filter?: ldap.EqualityFilter,
-		scope?: SearchScope
+		scope?: SearchScope,
 	): Promise<UserInfo | undefined> {
 		let { firstNameAttribute, lastNameAttribute, mailAttribute } = this.config;
 
@@ -168,7 +168,7 @@ export class LDAPAuthDriver extends AuthDriver {
 					res.on('end', () => {
 						resolve(undefined);
 					});
-				}
+				},
 			);
 		});
 	}
@@ -206,7 +206,7 @@ export class LDAPAuthDriver extends AuthDriver {
 					res.on('end', () => {
 						resolve(userGroups);
 					});
-				}
+				},
 			);
 		});
 	}
@@ -221,9 +221,13 @@ export class LDAPAuthDriver extends AuthDriver {
 		return user?.id;
 	}
 
-	async getUserID(payload: Record<string, any>): Promise<string> {
+	async getUserID(payload: Record<string, unknown>): Promise<string> {
 		if (!payload['identifier']) {
 			throw new InvalidCredentialsException();
+		}
+
+		if (typeof payload['identifier'] !== 'string' || Buffer.isBuffer(payload['identifier'])) {
+			throw new InvalidPayloadException('Identifier provided is not properly formatted');
 		}
 
 		await this.validateBindClient();
@@ -236,7 +240,7 @@ export class LDAPAuthDriver extends AuthDriver {
 				attribute: userAttribute ?? 'cn',
 				value: payload['identifier'],
 			}),
-			userScope ?? 'one'
+			userScope ?? 'one',
 		);
 
 		if (!userInfo?.dn) {
@@ -252,7 +256,7 @@ export class LDAPAuthDriver extends AuthDriver {
 					attribute: groupAttribute ?? 'member',
 					value: groupAttribute?.toLowerCase() === 'memberuid' && userInfo.uid ? userInfo.uid : userInfo.dn,
 				}),
-				groupScope ?? 'one'
+				groupScope ?? 'one',
 			);
 
 			if (userGroups.length) {
@@ -276,7 +280,7 @@ export class LDAPAuthDriver extends AuthDriver {
 				`auth.update`,
 				{},
 				{ identifier: userInfo.dn, provider: this.config['provider'], providerPayload: { userInfo, userRole } },
-				{ database: getDatabase(), schema: this.schema, accountability: null }
+				{ database: getDatabase(), schema: this.schema, accountability: null },
 			);
 
 			// Only sync roles if the AD groups are configured
@@ -309,7 +313,7 @@ export class LDAPAuthDriver extends AuthDriver {
 			`auth.create`,
 			userPayload,
 			{ identifier: userInfo.dn, provider: this.config['provider'], providerPayload: { userInfo, userRole } },
-			{ database: getDatabase(), schema: this.schema, accountability: null }
+			{ database: getDatabase(), schema: this.schema, accountability: null },
 		);
 
 		try {
@@ -356,8 +360,8 @@ export class LDAPAuthDriver extends AuthDriver {
 		});
 	}
 
-	override async login(user: User, payload: Record<string, any>): Promise<void> {
-		await this.verify(user, payload['password']);
+	override async login(user: User, payload: Record<string, unknown>): Promise<void> {
+		await this.verify(user, payload['password'] as string | undefined);
 	}
 
 	override async refresh(user: User): Promise<void> {
@@ -430,12 +434,12 @@ export function createLDAPAuthRouter(provider: string): Router {
 			const { accessToken, refreshToken, expires } = await authenticationService.login(
 				provider,
 				req.body,
-				req.body?.otp
+				req.body?.otp,
 			);
 
 			const payload = {
 				data: { access_token: accessToken, expires },
-			} as Record<string, Record<string, any>>;
+			} as Record<string, Record<string, unknown>>;
 
 			if (mode === 'json') {
 				payload['data']!['refresh_token'] = refreshToken;
@@ -449,7 +453,7 @@ export function createLDAPAuthRouter(provider: string): Router {
 
 			return next();
 		}),
-		respond
+		respond,
 	);
 
 	return router;
