@@ -1,5 +1,6 @@
 ---
-description: This guide shows you how to build re-usable page components using Directus Many-to-Any (M2A) relationships.
+description:
+  This guide shows you how to build re-usable page components using DB Studio Many-to-Any (M2A) relationships.
 tags: []
 skill_level:
 directus_version: 9.21.4
@@ -15,7 +16,7 @@ author: Bryant Gillespie
 
 Many websites are made of common, repeating sections or groups of content.
 
-A common use case when using Directus as a Headless CMS is creating individual blocks that can be re-used on many
+A common use case when using DB Studio as a Headless CMS is creating individual blocks that can be re-used on many
 different pages.
 
 This enables your content team create unique page layouts from re-usable components.
@@ -30,13 +31,6 @@ To achieve this, you will:
 - Learn tips to work with your front-end
 
 ## How-To Guide
-
-:::tip Requirements
-
-You’ll need to have either a Directus Cloud project configured and running or a self-hosted instance of Directus up and
-running.
-
-:::
 
 ### Map Out Your Data Model
 
@@ -166,7 +160,7 @@ To keep things organized, we recommend that you namespace each collection with a
    - Gallery / Cards
    - Article
 
-   c. Save the field. Directus will create a new, hidden
+   c. Save the field. DB Studio will create a new, hidden
    [junction collection](/configuration/data-model/relationships#many-to-any-m2a) for you automatically.
 
 :::tip
@@ -209,7 +203,7 @@ how to properly fetch nested relational M2A data without over-fetching data that
 // Write some code here in your front-end framework that gets the slug from the current URL.
 const slug = 'the-ultimate-guide-to-rabbits';
 
-// Call the Directus API using the SDK.
+// Call the DB Studio API using the SDK.
 const response = await directus.items('pages').readByQuery({
 	filter: {
 		slug: { _eq: slug },

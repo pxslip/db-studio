@@ -6,7 +6,7 @@ pageClass: page-reference
 
 # Revisions
 
-> Revisions are individual changes to items made. Directus keeps track of changes made, so you're able to revert to a
+> Revisions are individual changes to items made. DB Studio keeps track of changes made, so you're able to revert to a
 > previous state at will. [Learn more about Revisions](/getting-started/glossary#revisions).
 
 ---

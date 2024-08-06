@@ -99,11 +99,6 @@ Data Model Settings.
 
 ## Card Layout
 
-<video autoplay playsinline muted loop controls title="Card Layout">
-	<source src="https://cdn.directus.io/docs/v9/app-guide/layouts/Layouts-20221205/card-layout-20221205A.mp4
-" type="video/mp4" />
-</video>
-
 This tiled Layout is ideal for Collections that prioritize an image _(e.g. a user or blog post)_. This is the default
 for both the [User Directory](/app/user-directory) and [File Library](/app/file-library). It includes the following
 controls.
@@ -191,50 +186,5 @@ To use this Layout, the Collection must have a Map Field configured.
 @TODO configuration > data-model > fields
 Link to Map Field
 -->
-
-:::
-
-## Kanban Layout
-
-:::info Availability
-
-The Kanban Layout is only available in Directus Cloud and Enterprise Self-Hosted projects.
-
-:::
-
-This Layout is ideal for Collections that serve as project management tools or to-do lists, where each Item represents a
-task, because it groups Items onto columns according to their status _(e.g. "Not Started", "In Progress", "Under
-Review", "Complete", or any other status defined)_. The following controls are available.
-
-**Layout Options**
-
-- **Group By** — Select the Field used to define Item status. See below for details.
-- **Card Title** — Choose the Field use to serve as the title for each kanban board.
-- **Card Text** — Choose a Field to display additional text on each Item.
-
-**Layout Options > Advanced**
-
-- **Card Tags** — Choose a Tag Field to be displayed on the Item.
-- **Card Date** — Choose a Datetime Field to be displayed on each Item.
-- **Card Image** — Choose an Image Field to be displayed on each Item.
-- **Card Image Fit** — Toggle whether the image fit is cropped.
-- **Card User** — Choose the User Created Field to display their avatar in the bottom right corner.
-- **Show Ungrouped** — Toggle display of a column containing Items with no assigned status.
-
-**Subheader**\
-_There is no Subheader for the Kanban Layout._
-
-**Page Area**
-
-- **Create Task and Assign Status** — Click <span mi icon>add</span> in a status column and the Item Page will open.
-- **Sort Panels** — Drag and drop Items to reposition or change task status.
-- **Add Status Panel** — Click <span mi icon>add_box</span> and add a group name (i.e. new status column).
-- **Edit or Delete Status Column** — Click <span mi icon>more_horiz</span> and then click <span mi icon>edit</span> to
-  edit or <span mi icon>delete</span> to delete.
-
-:::tip Configuration Requirements
-
-To make this Layout work, you will need to configure an appropriate status [Field](/configuration/data-model/fields.md)
-on the Collection, then identify this Field under **"Group By"** in the Layout Options menu.
 
 :::

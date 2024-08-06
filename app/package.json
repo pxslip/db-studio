@@ -9,7 +9,6 @@
 		"url": "https://github.com/pxslip/db-studio.git",
 		"directory": "app"
 	},
-	"funding": "https://github.com/pxslip/db-studio?sponsor=1",
 	"author": "Rijk van Zanten <rijkvanzanten@me.com>",
 	"exports": {
 		".": "./dist/index.html",

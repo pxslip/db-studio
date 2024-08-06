@@ -1,12 +1,12 @@
 ---
 description:
-  A collection of example Directus configurations for integrating with various OAuth 2.0, OpenID and SAML platforms.
+  A collection of example DB Studio configurations for integrating with various OAuth 2.0, OpenID and SAML platforms.
 readTime: 2 min read
 ---
 
 # SSO Examples
 
-Below is a collection of example Directus configurations for integrating with various OAuth 2.0 and OpenID platforms.
+Below is a collection of example DB Studio configurations for integrating with various OAuth 2.0 and OpenID platforms.
 
 Due to the large number of available SSO platforms, this list will only cover the most common configurations.
 Contributions to expand and maintain the list are encouraged.
@@ -157,19 +157,23 @@ AUTH_AWSSSO_DEFAULT_ROLE_ID='needs-to-be-a-valid-role-on-the-instance'
 AUTH_AWSSSO_IDENTIFIER_KEY=email
 AUTH_AWSSSO_EMAIL_KEY=email
 ```
+
 ::: tip AWS Help
 
-* AWS SSO Docs are not that verbose. Users have found that the `sp_metadata` environment variable can be supplied empty.
+- AWS SSO Docs are not that verbose. Users have found that the `sp_metadata` environment variable can be supplied empty.
 
-* Users have found that replacing `<md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://your-soo-portal-url"/>` in the IAM Identity Center SAML metadata file with your AWS Portal URL is a fix for getting the 'Login With SSO' button on Directus to work, rather the default redirect from AWS.
+- Users have found that replacing
+  `<md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://your-soo-portal-url"/>`
+  in the IAM Identity Center SAML metadata file with your AWS Portal URL is a fix for getting the 'Login With SSO'
+  button on DB Studio to work, rather the default redirect from AWS.
 
-* Directus expects `<?xml version="1.0" encoding="UTF-8"?>` to be removed from the start of the XML.
+- DB Studio expects `<?xml version="1.0" encoding="UTF-8"?>` to be removed from the start of the XML.
 
 :::
 
 **Mapping:**
 
-Maps the email address into Directus as external_identifier:
+Maps the email address into DB Studio as external_identifier:
 
 ```
 | User attribute in the application | Maps to this string value or user attribute in IAM Identity Center | type |
@@ -180,5 +184,4 @@ Maps the email address into Directus as external_identifier:
 
 **Config:**
 
-Relay state - `admin/login`
-Application ACS URL - `https://your-directus-instance/auth/login/awssso/acs`
+Relay state - `admin/login` Application ACS URL - `https://your-directus-instance/auth/login/awssso/acs`

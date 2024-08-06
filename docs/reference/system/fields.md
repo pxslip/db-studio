@@ -20,7 +20,7 @@ Name of the collection the field resides in.
 The identifier of the field. This matches the table column name.
 
 `type` **string**\
-The Directus data type of the field. See [Types](/getting-started/glossary#types) for possible options.
+The DB Studio data type of the field. See [Types](/getting-started/glossary#types) for possible options.
 
 #### Meta
 
@@ -307,8 +307,8 @@ This endpoint doesn't currently support any query parameters.
 Field key, also used as the column name.
 
 `type` **Required**\
-One of the Directus types. This in turn controls what datatype is used for the column in the database. Setting the type to
-`alias` prevents a column from being created in the database.
+One of the DB Studio types. This in turn controls what datatype is used for the column in the database. Setting the type
+to `alias` prevents a column from being created in the database.
 
 `meta`\
 Any of the optional meta values in the [field object](#the-field-object).
