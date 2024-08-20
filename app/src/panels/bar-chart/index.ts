@@ -1,71 +1,11 @@
 import { definePanel, useCollection } from '@db-studio/extensions-sdk';
-import type { Field, DeepPartial } from '@db-studio/types';
+import { fields } from '@db-studio/extensions-sdk';
 import PanelComponent from './panel-bar-chart.vue';
 import { computed } from 'vue';
 import { useFieldsStore } from '@/stores/fields';
 import { getLocalTypeForField } from '@/utils/get-local-type';
 
-interface DropdownOption {
-	value: string;
-	text: string;
-	disabled?: boolean;
-	type?: string;
-}
-
-interface AggregateFieldOptions {
-	field: string;
-	name: string;
-	moreChoices?: DropdownOption[];
-}
-
-function aggregateField({ field, name, moreChoices = [] }: AggregateFieldOptions): DeepPartial<Field> {
-	return {
-		field,
-		type: 'string',
-		name,
-		meta: {
-			width: 'full',
-			interface: 'select-dropdown',
-			options: {
-				choices: [
-					{
-						text: '$t:count',
-						value: 'count',
-					},
-					{
-						text: '$t:count_distinct',
-						value: 'countDistinct',
-					},
-					{
-						text: '$t:avg',
-						value: 'avg',
-					},
-					{
-						text: '$t:avg_distinct',
-						value: 'avgDistinct',
-					},
-					{
-						text: '$t:sum',
-						value: 'sum',
-					},
-					{
-						text: '$t:sum_distinct',
-						value: 'sumDistinct',
-					},
-					{
-						text: '$t:min',
-						value: 'min',
-					},
-					{
-						text: '$t:max',
-						value: 'max',
-					},
-					...moreChoices,
-				],
-			},
-		},
-	};
-}
+type DropdownOption = fields.DropdownOption;
 
 export default definePanel({
 	id: 'ushmm.bar-chart',
@@ -156,25 +96,18 @@ export default definePanel({
 					},
 				},
 			},
-			{
-				field: 'values',
-				name: 'Value Field',
-				type: 'string',
-				meta: {
-					interface: 'select-dropdown',
-					required: true,
-					width: 'half',
-					options: {
-						placeholder: '$t:primary_key',
-						choices: valueFields.value,
-					},
-				},
-			},
+			fields.aggregateValue({
+				field: 'value',
+				allowForeignKeys: true,
+				allowPrimaryKey: true,
+				collectionField: 'collection',
+				functionField: 'aggregate',
+			}),
 			{
 				schema: {
 					default_value: 'avg',
 				},
-				...aggregateField({ field: 'aggregate', name: 'Aggregate Function' }),
+				...fields.aggregateField({ field: 'aggregate', name: 'Aggregate Function' }),
 			},
 		];
 	},
