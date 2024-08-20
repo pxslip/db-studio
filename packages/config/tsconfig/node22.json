@@ -1,7 +1,6 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"display": "Extends @tsconfig/node18",
-	"extends": "@tsconfig/node18/tsconfig.json",
+	"display": "ES2023 TSConfig",
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
 		"allowUnreachableCode": false,
@@ -11,7 +10,7 @@
 		"esModuleInterop": true,
 		"exactOptionalPropertyTypes": true,
 		"forceConsistentCasingInFileNames": true,
-		"lib": ["es2022"],
+		"lib": ["es2023"],
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		"noFallthroughCasesInSwitch": true,

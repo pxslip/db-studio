@@ -6,7 +6,7 @@ export abstract class AuthDriver {
 	knex: Knex;
 	schema: SchemaOverview;
 
-	constructor(options: AuthDriverOptions, _config: Record<string, any>) {
+	constructor(options: AuthDriverOptions) {
 		this.knex = options.knex;
 		this.schema = options.schema;
 	}
@@ -18,7 +18,7 @@ export abstract class AuthDriver {
 	 * @throws InvalidCredentialsException
 	 * @return User id of the identifier
 	 */
-	abstract getUserID(payload: Record<string, any>): Promise<string>;
+	abstract getUserID(payload: Record<string, unknown>): Promise<string>;
 
 	/**
 	 * Verify user password

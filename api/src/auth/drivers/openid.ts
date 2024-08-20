@@ -47,7 +47,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 	}
 
 	constructor(options: AuthDriverOptions, config: Record<string, any>) {
-		super(options, config);
+		super(options);
 
 		const { issuerUrl, clientId, clientSecret, ...additionalConfig } = config;
 
@@ -60,7 +60,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 		const clientOptionsOverrides = getConfigFromEnv(
 			`AUTH_${config['provider'].toUpperCase()}_CLIENT_`,
 			[`AUTH_${config['provider'].toUpperCase()}_CLIENT_ID`, `AUTH_${config['provider'].toUpperCase()}_CLIENT_SECRET`],
-			'underscore'
+			'underscore',
 		);
 
 		this.redirectUrl = redirectUrl.toString();
@@ -76,7 +76,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 						reject(
 							new InvalidConfigException('OpenID provider does not support required code flow', {
 								provider: additionalConfig['provider'],
-							})
+							}),
 						);
 					}
 
@@ -87,7 +87,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 							redirect_uris: [this.redirectUrl],
 							response_types: ['code'],
 							...clientOptionsOverrides,
-						})
+						}),
 					);
 				})
 				.catch((e) => {
@@ -100,7 +100,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 	async generateAuthUrl(
 		codeVerifier: string,
 		prompt = false,
-		additionalParams?: AuthorizationParameters | undefined
+		additionalParams?: AuthorizationParameters | undefined,
 	): Promise<string> {
 		try {
 			const client = await this.client;
@@ -125,7 +125,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 	}
 
 	async getTokenSetAndUserInfo(
-		payload: Record<string, any>
+		payload: Record<string, any>,
 	): Promise<[TokenSet, Record<string, unknown>, UserPayload]> {
 		let tokenSet;
 		let userInfo;
@@ -137,7 +137,7 @@ export class OpenIDAuthDriver extends BaseOAuthDriver {
 			tokenSet = await client.callback(
 				this.redirectUrl,
 				{ code: payload['code'], state: payload['state'], iss: payload['iss'] },
-				{ code_verifier: payload['codeVerifier'], state: codeChallenge, nonce: codeChallenge }
+				{ code_verifier: payload['codeVerifier'], state: codeChallenge, nonce: codeChallenge },
 			);
 
 			userInfo = tokenSet.claims();
@@ -196,7 +196,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 				{
 					expiresIn: '5m',
 					issuer: 'directus',
-				}
+				},
 			);
 
 			res.cookie(`openid.${providerName}`, token, {
@@ -210,7 +210,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 
 			return res.redirect(await provider.generateAuthUrl(codeVerifier, prompt, additionalParams));
 		}),
-		respond
+		respond,
 	);
 
 	router.post(
@@ -219,7 +219,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 		(req, res) => {
 			res.redirect(303, `./callback?${new URLSearchParams(req.body)}`);
 		},
-		respond
+		respond,
 	);
 
 	router.get(
@@ -306,7 +306,7 @@ export function createOpenIDAuthRouter(providerName: string): Router {
 
 			next();
 		}),
-		respond
+		respond,
 	);
 
 	return router;

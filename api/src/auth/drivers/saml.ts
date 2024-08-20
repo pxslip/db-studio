@@ -28,7 +28,7 @@ export class SAMLAuthDriver extends LocalAuthDriver {
 	config: Record<string, any>;
 
 	constructor(options: AuthDriverOptions, config: Record<string, any>) {
-		super(options, config);
+		super(options);
 
 		this.config = config;
 		this.usersService = new UsersService({ knex: this.knex, schema: this.schema });
@@ -80,7 +80,7 @@ export class SAMLAuthDriver extends LocalAuthDriver {
 			`auth.create`,
 			userPayload,
 			{ identifier: identifier.toLowerCase(), provider: this.config['provider'], providerPayload: { ...payload } },
-			{ database: getDatabase(), schema: this.schema, accountability: null }
+			{ database: getDatabase(), schema: this.schema, accountability: null },
 		);
 
 		try {
@@ -109,7 +109,7 @@ export function createSAMLAuthRouter(providerName: string) {
 		asyncHandler(async (_req, res) => {
 			const { sp } = getAuthProvider(providerName) as SAMLAuthDriver;
 			return res.header('Content-Type', 'text/xml').send(sp.getMetadata());
-		})
+		}),
 	);
 
 	router.get(
@@ -124,7 +124,7 @@ export function createSAMLAuthRouter(providerName: string) {
 			}
 
 			return res.redirect(parsedUrl.toString());
-		})
+		}),
 	);
 
 	router.post(
@@ -145,7 +145,7 @@ export function createSAMLAuthRouter(providerName: string) {
 			}
 
 			return res.redirect(context);
-		})
+		}),
 	);
 
 	router.post(
@@ -192,7 +192,7 @@ export function createSAMLAuthRouter(providerName: string) {
 				throw error;
 			}
 		}),
-		respond
+		respond,
 	);
 
 	return router;
