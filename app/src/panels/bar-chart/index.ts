@@ -1,11 +1,9 @@
 import { definePanel, useCollection } from '@db-studio/extensions-sdk';
-import { fields } from '@db-studio/extensions-sdk';
+import { aggregateValue, aggregateField, type DropdownOption } from '@db-studio/extensions-sdk/fields';
 import PanelComponent from './panel-bar-chart.vue';
 import { computed } from 'vue';
 import { useFieldsStore } from '@/stores/fields';
 import { getLocalTypeForField } from '@/utils/get-local-type';
-
-type DropdownOption = fields.DropdownOption;
 
 export default definePanel({
 	id: 'ushmm.bar-chart',
@@ -14,14 +12,14 @@ export default definePanel({
 	description: 'Create a panel that shows a Bar Chart',
 	component: PanelComponent,
 	query(options) {
-		const required = ['collection', 'category', 'values'];
+		const required = ['collection', 'category', 'value'];
 		if (required.some((field) => !Object.keys(options).includes(field))) {
 			return;
 		}
-		let { collection, category, values, aggregate } = options;
+		let { collection, category, value, aggregate } = options;
 		const fields = useFieldsStore();
 		// test if values is a relational field
-		const valueField = fields.getField(collection, values);
+		const valueField = fields.getField(collection, value);
 		// const valueType = getLocalTypeForField(collection, values);
 		// if (valueType && ['o2m', 'm2m'].includes(valueType)) {
 		// 	values = `${valueField?.collection}.`;
@@ -30,7 +28,7 @@ export default definePanel({
 			collection: collection,
 			query: {
 				group: [category],
-				aggregate: { [aggregate ?? 'avg']: [values] },
+				aggregate: { [aggregate ?? 'avg']: [value] },
 				limit: -1,
 			},
 		};
@@ -96,7 +94,7 @@ export default definePanel({
 					},
 				},
 			},
-			fields.aggregateValue({
+			aggregateValue({
 				field: 'value',
 				allowForeignKeys: true,
 				allowPrimaryKey: true,
@@ -107,7 +105,7 @@ export default definePanel({
 				schema: {
 					default_value: 'avg',
 				},
-				...fields.aggregateField({ field: 'aggregate', name: 'Aggregate Function' }),
+				...aggregateField({ field: 'aggregate', name: 'Aggregate Function' }),
 			},
 		];
 	},
