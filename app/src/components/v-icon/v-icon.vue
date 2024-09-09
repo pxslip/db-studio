@@ -64,23 +64,31 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits(['click']);
 
 const sizeClass = computed<string | null>(() => {
-	if (props.sup) return 'sup';
+	if (props.sup) {
+		return 'sup';
+	}
 	return useSizeClass(props).value;
 });
 
 const customIconName = computed(() => {
 	const name = `CustomIcon${upperFirst(camelCase(props.name.replace(/_/g, '-')))}`;
-	if (name in components) return components[name];
+	if (name in components) {
+		return components[name];
+	}
 	return null;
 });
 
 const socialIconName = computed<IconName | null>(() => {
-	if (socialIcons.includes(props.name)) return props.name.replace(/_/g, '-') as IconName;
+	if (socialIcons.includes(props.name)) {
+		return props.name.replace(/_/g, '-') as IconName;
+	}
 	return null;
 });
 
 function emitClick(event: MouseEvent) {
-	if (props.disabled) return;
+	if (props.disabled) {
+		return;
+	}
 	emit('click', event);
 }
 </script>
@@ -120,14 +128,22 @@ body {
 		-moz-osx-font-smoothing: grayscale;
 		text-rendering: optimizeLegibility;
 		font-feature-settings: 'liga';
-		font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+		font-variation-settings:
+			'FILL' 0,
+			'wght' 400,
+			'GRAD' 0,
+			'opsz' 24;
 
 		&::after {
 			content: attr(data-icon);
 		}
 
 		&.filled {
-			font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+			font-variation-settings:
+				'FILL' 1,
+				'wght' 400,
+				'GRAD' 0,
+				'opsz' 24;
 		}
 	}
 
