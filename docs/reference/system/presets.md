@@ -6,7 +6,7 @@ pageClass: page-reference
 
 # Preset
 
-> Presets hold the preferences of individual users of the platform. This allows Directus to show and maintain custom
+> Presets hold the preferences of individual users of the platform. This allows DB Studio to show and maintain custom
 > item listings and bookmarks for users of the app. [Learn more about Presets](/getting-started/glossary#presets).
 
 ---

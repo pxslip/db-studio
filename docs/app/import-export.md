@@ -41,7 +41,7 @@ To import Items from a file, follow the steps below.
 4. Select the desired file and click **"open"**.
 5. Click **"Start Import"** to import the Items.
 
-The Items will now be in the Collection. The file itself will not be stored in the Directus Project.
+The Items will now be in the Collection. The file itself will not be stored in the DB Studio Project.
 
 :::tip Importing Relational Files
 
@@ -81,7 +81,7 @@ Export your file to CSV to seamlessly open in excel.
 
 :::tip Exporting to File Library
 
-When downloading 2,500 or more Items, you will be required to download into the Directus Project's File Library. After
+When downloading 2,500 or more Items, you will be required to download into the DB Studio Project's File Library. After
 exporting, go to the File Library to download your file locally.
 
 :::

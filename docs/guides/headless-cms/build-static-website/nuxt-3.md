@@ -1,5 +1,5 @@
 ---
-description: This guide shows you how build a website with Nuxt 3 and Directus as a Headless CMS.
+description: This guide shows you how build a website with Nuxt 3 and DB Studio as a Headless CMS.
 tags: []
 skill_level:
 directus_version: 9.21.4
@@ -7,68 +7,66 @@ author_override:
 author: Kevin Lewis
 ---
 
-# Build a Website With Nuxt 3 and the Directus JavaScript SDK
+# Build a Website With Nuxt 3 and the DB Studio JavaScript SDK
 
 > {{ $frontmatter.description }}
 
 [Nuxt](https://nuxt.com/) is a popular JavaScript framework based on Vue.js. In this tutorial, you will learn how to
-build a website using Directus as a CMS. You will store, retrieve, and use global metadata such as the site title,
-create new pages dynamically based on Directus items, and build a blog.
+build a website using DB Studio as a CMS. You will store, retrieve, and use global metadata such as the site title,
+create new pages dynamically based on DB Studio items, and build a blog.
 
 ## Before You Start
 
 You will need:
 
 - To install Node.js and a code editor on your computer.
-- To sign up for a Directus Cloud account.
+- Have set up a DB Studio instance
 - Some knowledge of Vue.js and Nuxt.
 
-Create a new Directus Cloud project - any tier and configuration is suitable for this tutorial.
-
-Open your terminal and run the following commands to create a new Nuxt project and the Directus JavaScript SDK:
+Open your terminal and run the following commands to create a new Nuxt project and the DB Studio JavaScript SDK:
 
 ```
 npx nuxt init my-website
 cd my-website
 npm install
-npm install @wbce-d9/sdk
+npm install @db-studio/sdk
 ```
 
 Open `my-website` in your code editor and type `npm run dev` in your terminal to start the Nuxt development server and
 open `http://localhost:3000` in your browser.
 
-## Create Plugin For @wbce-d9/sdk
+## Create Plugin For @db-studio/sdk
 
 To expose an npm package available globally in your Nuxt project you must create a plugin. Create a new directory called
 `plugins` and a new file called `directus.js` inside of it.
 
 ```js
-import { Directus } from '@db-studio/sdk';
-const directus = new Directus('https://your-project-id.directus.app');
+import { Studio } from '@db-studio/sdk';
+const studio = new Studio('https://your.studio.url');
 
 export default defineNuxtPlugin(() => {
 	return {
-		provide: { directus },
+		provide: { studio },
 	};
 });
 ```
 
-Ensure your Project URL is correct when initializing the Directus JavaScript SDK.
+Ensure your Project URL is correct when initializing the DB Studio JavaScript SDK.
 
 Inside of your `app.vue` entry file, add the following to the bottom to test that your plugin works:
 
 ```js
-<script setup>const {$directus} = useNuxtApp() console.log($directus)</script>
+<script setup>const {$studio} = useNuxtApp() console.log($studio)</script>
 ```
 
-Refresh your browser, and check the console. You should see the Directus instance logged, which means you have access to
-all of the Directus JavaScript SDK methods by using the `useNuxtApp()` composable in any page or component.
+Refresh your browser, and check the console. You should see the DB Studio instance logged, which means you have access
+to all of the DB Studio JavaScript SDK methods by using the `useNuxtApp()` composable in any page or component.
 
 Once you've confirmed this, remove the `<script>` from `app.vue` before continuing.
 
 ## Using Global Metadata and Settings
 
-In your Directus project, navigate to Settings -> Data Model and create a new collection called `global`. Under the
+In your DB Studio project, navigate to Settings -> Data Model and create a new collection called `global`. Under the
 Singleton option, select 'Treat as a single object', as this collection will have just a single entry containing global
 website metadata.
 
@@ -92,14 +90,14 @@ Create a new directory called `pages` and a new file called `index.vue` inside o
 </template>
 
 <script setup>
-  const { $directus } = useNuxtApp()
+  const { $studio } = useNuxtApp()
   const { data: global } = await useAsyncData('global', () => {
-    return $directus.items('global').readByQuery()
+    return $studio.items('global').readByQuery()
   })
 </script>
 ```
 
-Refresh your browser. You should see data from your Directus Global collection in your page.
+Refresh your browser. You should see data from your DB Studio Global collection in your page.
 
 ## Creating Pages With Directus
 
@@ -120,10 +118,10 @@ of the top-level pages.
 </template>
 
 <script setup>
-  const { $directus } = useNuxtApp()
+  const { $studio } = useNuxtApp()
   const route = useRoute()
   const { data: page } = await useAsyncData('page', () => {
-    return $directus.items('pages').readOne(route.params.slug)
+    return $studio.items('pages').readOne(route.params.slug)
   })
   if (!page.value) throw createError({
     statusCode: 404,
@@ -132,7 +130,7 @@ of the top-level pages.
 </script>
 ```
 
-Go to `http://localhost:3000/about`, replacing `about` with any of your item slugs. Using the Directus JavaScript SDK,
+Go to `http://localhost:3000/about`, replacing `about` with any of your item slugs. Using the DB Studio JavaScript SDK,
 the single item with that slug is retrieved, and the page should show your data. `readOne()` only checks against your
 `slug` Primary ID Field.
 
@@ -170,9 +168,9 @@ Inside of the `pages` directory, create a new subdirectory called `blog` and a n
 </template>
 
 <script setup>
-  const { $directus } = useNuxtApp()
+  const { $studio } = useNuxtApp()
   const { data: posts } = await useAsyncData('posts', () => {
-    return $directus.items('posts').readByQuery({
+    return $studio.items('posts').readByQuery({
       fields: ['slug', 'title', 'publish_date', 'author.name'],
       sort: ['-publish_date']
     })
@@ -209,16 +207,16 @@ Each blog post links to a page that does not yet exist. In the `pages/blog` dire
 
 ```js
 <template>
-  <img :src="`${$directus.url}/assets/${post.image.filename_disk}?width=600`" alt="">
+  <img :src="`${$studio.url}/assets/${post.image.filename_disk}?width=600`" alt="">
   <h1>{{post.title}}</h1>
   <div v-html="post.content"></div>
 </template>
 
 <script setup>
-  const { $directus } = useNuxtApp()
+  const { $studio } = useNuxtApp()
   const route = useRoute()
   const { data: post } = await useAsyncData('post', () => {
-    return $directus.items('posts').readOne(route.params.slug, {
+    return $studio.items('posts').readOne(route.params.slug, {
       fields: ['*.*']
     })
   })
@@ -231,11 +229,11 @@ Each blog post links to a page that does not yet exist. In the `pages/blog` dire
 
 Some key notes about this code snippet.
 
-- In the `<img>` tag, `$directus.url` is the value provided when creating the Directus plugin.
+- In the `<img>` tag, `$studio.url` is the value provided when creating the DB Studio plugin.
 - The `width` attribute demonstrates Directus' built-in image transformations.
 - Once again, `v-html` should only be used if all content is trusted.
 - Because almost-all fields are used in this page, including those from the `image` relational field, the `fields`
-  property when using the Directus JavaScript SDK can be set to `*.*`.
+  property when using the DB Studio JavaScript SDK can be set to `*.*`.
 
 Click on any of the blog post links, and it will take you to a blog post page complete with a header image.
 
@@ -256,7 +254,7 @@ the `<NuxtPage />` component, add a navigation. Don't forget to use your specifi
 
 ## Next Steps
 
-Through this guide, you have set up a Nuxt project, created a Directus plugin, and used it to query data. You have used
+Through this guide, you have set up a Nuxt project, created a DB Studio plugin, and used it to query data. You have used
 a singleton collection for global metadata, dynamically created pages, as well as blog listing and post pages.
 
 If you want to change what is user-accessible, consider setting up more restrictive roles and accessing only valid data

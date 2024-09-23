@@ -299,8 +299,8 @@ may send it there automatically.
 
 ## Send Notification
 
-This operation pushes notifications to Directus Users. If the operation executes successfully, a list containing the IDs
-of all sent notifications generated is appended under this operation's key.
+This operation pushes notifications to DB Studio Users. If the operation executes successfully, a list containing the
+IDs of all sent notifications generated is appended under this operation's key.
 
 **Options**
 

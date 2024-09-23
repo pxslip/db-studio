@@ -1,13 +1,13 @@
 ---
 description:
-  Directus offers an extremely granular, yet easy to configure permissions system. When you create a role, all
+  DB Studio offers an extremely granular, yet easy to configure permissions system. When you create a role, all
   permissions are turned off by default.
 readTime:
 ---
 
 # Permissions
 
-> Directus offers an extremely granular, yet easy to configure permissions system. When you create a role, all
+> DB Studio offers an extremely granular, yet easy to configure permissions system. When you create a role, all
 > permissions are turned off by default. From here, you explicitly reconfigure its permissions for each collection as
 > desired.
 
@@ -25,7 +25,7 @@ To configure a role's access permissions, follow these steps.
    Each collection is a row. Its [CRUDS permissions](/configuration/users-roles-permissions.md#directus-permissions) are
    in columns.
 2. Click the icon of the collection and permission type that you want to set and a tooltip will appear. If you'd like to
-   adjust permissions for Directus system collections, then click **System Collections** to expand the menu and access
+   adjust permissions for DB Studio system collections, then click **System Collections** to expand the menu and access
    these collections.
 3. Click the icon in the relevant collection row and CRUDS permission column and a popup menu will appear with the
    following permission levels:

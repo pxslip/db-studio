@@ -6,21 +6,17 @@ readTime: 1 min read
 # Resources
 
 ## Developer Resources
-::: warning
-TODO: Update developer resources links
-:::
+
+::: warning TODO: Update developer resources links :::
 
 - **[GitHub](https://github.com/pxslip/db-studio)** — The open-source repository and version control.
-- **[NPM Package](https://www.npmjs.com/package/directus)** — The official Directus node package.
-- **[Docker Image](https://hub.docker.com/r/directus/directus)** — The official Directus docker image.
-- **[Documentation](https://docs.directus.io)** — Docs for the most recent version of Directus.
-- **[Crowdin](https://locales.directus.io)** — Service for managing the App's many language translations.
+- **[NPM Package](https://www.npmjs.com/package/@db-studio/db-studio)** — The official DB Studio node package.
+- **[Docker Image](https://hub.docker.com/r/db-studio/db-studio)** — The official DB Studio docker image.
+- **[Documentation](https://pxslip.github.io/db-studio)** — Docs for the most recent version of Directus.
 
 ## Community
 
-::: warning
-TODO: Update community links
-:::
+::: warning TODO: Update community links :::
 
 - **[YouTube](https://www.youtube.com/c/DirectusVideos)** — Checkout our channel with video tutorials and feature
   overviews.

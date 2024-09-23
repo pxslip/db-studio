@@ -77,7 +77,7 @@ conditions inside of OR Groups.
 
 The following video shows how to filter for Blog posts written within the past 60 days.
 
-The following Dynamic Variables are built into Directus to make Filtering easier: `$CURRENT_USER`, `$CURRENT_ROLE`,
+The following Dynamic Variables are built into DB Studio to make Filtering easier: `$CURRENT_USER`, `$CURRENT_ROLE`,
 `$NOW` and `$NOW(<adjustment>)`. For more information, please see the Dynamic Variables section in
 [Filter Rules](/reference/filter-rules).
 
@@ -114,20 +114,13 @@ Filters.
 
 ## Extensibility Options
 
-Directus Core is completely open-source, modular and extensible. Extensions allow you to expand or modify any part of
-Directus to fit your needs. Here are some great resources to get started down that track.
+DB Studio Core is completely open-source, modular and extensible. Extensions allow you to expand or modify any part of
+DB Studio to fit your needs. Here are some great resources to get started down that track.
 
 - [Extensions > Introduction](/extensions/introduction)
 - [Extensions > Creating Extensions](/extensions/creating-extensions)
 - [Contributing > Introduction](/contributing/introduction)
 - [Contributing > Codebase Overview](/contributing/codebase-overview)
-
-::: tip Accelerated Development
-
-Working on an enterprise project and looking to outsource or financially sponsor the development of a Shares extension?
-Contact [our team](https://directus.io/contact)
-
-:::
 
 ## More Help
 
