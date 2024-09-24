@@ -1588,9 +1588,6 @@ importers:
       '@db-studio/constants':
         specifier: workspace:*
         version: link:../constants
-      '@db-studio/exceptions':
-        specifier: workspace:*
-        version: link:../exceptions
       '@db-studio/storage':
         specifier: workspace:*
         version: link:../storage
