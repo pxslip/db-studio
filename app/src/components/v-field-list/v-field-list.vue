@@ -45,6 +45,7 @@ interface Props {
 	collection: string;
 	field?: string;
 	disabledFields?: string[];
+	allowedTypes?: string[];
 	includeFunctions?: boolean;
 	includeRelations?: boolean;
 	relationalFieldSelectable?: boolean;
@@ -54,6 +55,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
 	field: undefined,
 	disabledFields: () => [],
+	allowedTypes: () => [],
 	includeFunctions: false,
 	includeRelations: true,
 	relationalFieldSelectable: true,
@@ -64,7 +66,7 @@ const emit = defineEmits(['add']);
 
 const fieldsStore = useFieldsStore();
 
-const { collection, includeRelations } = toRefs(props);
+const { collection, includeRelations, allowedTypes } = toRefs(props);
 
 const fieldsCount = computed(() => fieldsStore.getFieldsForCollection(collection.value)?.length ?? 0);
 
@@ -74,7 +76,7 @@ const { treeList: treeListOriginal, loadFieldRelations, refresh } = useFieldTree
 
 const debouncedRefresh = debounce(() => refresh(), 250);
 
-watch(search, () => debouncedRefresh());
+watch([search, collection, allowedTypes, includeRelations], () => debouncedRefresh());
 
 const { t } = useI18n();
 
@@ -88,7 +90,7 @@ const treeList = computed(() => {
 	return list;
 
 	function setDisabled(
-		field: (typeof treeListOriginal.value)[number]
+		field: (typeof treeListOriginal.value)[number],
 	): (typeof treeListOriginal.value)[number] & { disabled: boolean } {
 		let disabled = field.group || false;
 
@@ -108,12 +110,21 @@ const addAll = () => {
 };
 
 function filter(field: Field, parent?: FieldNode): boolean {
+	// include related collections? If not, and the collection doesn't match exclude this field
 	if (
 		!includeRelations.value &&
 		(field.collection !== collection.value || (field.type === 'alias' && !field.meta?.special?.includes('group')))
-	)
+	) {
 		return false;
-	if (!search.value || isNil(parent) === false) return true;
+	}
+	// check if the field typ is in the allowed types
+	if (allowedTypes.value.length > 0 && !allowedTypes.value.includes(field.type)) {
+		return false;
+	}
+	// no search term? Nothing to filter on
+	if (!search.value || isNil(parent) === false) {
+		return true;
+	}
 
 	const children = isNil(field.schema?.foreign_key_table)
 		? fieldsStore.getFieldGroupChildren(field.collection, field.field)
