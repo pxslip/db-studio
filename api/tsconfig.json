@@ -2,7 +2,7 @@
 	"extends": "@db-studio/config/tsconfig/node18-esm",
 	"compilerOptions": {
 		"outDir": "dist",
-		"sourceMap": true
+		"inlineSourceMap": true
 	},
-	"include": ["src"]
+	"include": ["src/**/*.ts"]
 }

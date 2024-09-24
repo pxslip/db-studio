@@ -10,10 +10,11 @@ import { applyFunctionToColumnName } from '../utils/apply-function-to-column-nam
 import type { ColumnSortRecord } from '../utils/apply-query.js';
 import applyQuery, { applyLimit, applySort, generateAlias } from '../utils/apply-query.js';
 import { getCollectionFromAlias } from '../utils/get-collection-from-alias.js';
-import type { AliasMap } from '../utils/get-column-path.js';
+import { type AliasMap } from '../utils/get-column-path.js';
 import { getColumn } from '../utils/get-column.js';
 import { stripFunction } from '../utils/strip-function.js';
 import getDatabase from './index.js';
+import logger from '../logger.js';
 
 type RunASTOptions = {
 	/**
@@ -49,6 +50,8 @@ export default async function runAST(
 
 	const knex = options?.knex || getDatabase();
 
+	const aliasMap: AliasMap = Object.create(null);
+
 	if (ast.type === 'a2o') {
 		const results: { [collection: string]: null | Item | Item[] } = {};
 
@@ -75,7 +78,7 @@ export default async function runAST(
 		);
 
 		// The actual knex query builder instance. This is a promise that resolves with the raw items from the db
-		const dbQuery = await getDBQuery(schema, knex, collection, fieldNodes, query);
+		const dbQuery = await getDBQuery(schema, knex, collection, fieldNodes, query, { aliasMap });
 		const rawItems: Item | Item[] = await dbQuery;
 
 		if (!rawItems) return null;
@@ -144,16 +147,11 @@ export default async function runAST(
 	}
 }
 
-async function parseCurrentLevel(
-	schema: SchemaOverview,
-	collection: string,
-	children: (NestedCollectionNode | FieldNode | FunctionFieldNode)[],
-	query: Query,
-) {
+async function parseCurrentLevel(schema: SchemaOverview, collection: string, children: AST['children'], query: Query) {
 	const primaryKeyField = schema.collections[collection]!.primary;
 	const columnsInCollection = Object.keys(schema.collections[collection]!.fields);
 
-	const columnsToSelectInternal: string[] = [];
+	const columnsToSelectInternal: (string | Knex.Raw)[] = [];
 	const nestedCollectionNodes: NestedCollectionNode[] = [];
 
 	for (const child of children) {
@@ -168,6 +166,10 @@ async function parseCurrentLevel(
 		}
 
 		if (!child.relation) continue;
+		// bypass adding a group by to the nesetedCollectionNode list
+		logger.debug(query.group);
+		logger.debug(child.fieldKey);
+		if (query.group?.includes(child.fieldKey)) continue;
 
 		if (child.type === 'm2o') {
 			columnsToSelectInternal.push(child.relation.field);
@@ -190,11 +192,15 @@ async function parseCurrentLevel(
 		columnsToSelectInternal.push(primaryKeyField);
 	}
 
+	if (query.group) {
+		columnsToSelectInternal.push(...query.group);
+	}
+
 	/** Make sure select list has unique values */
 	const columnsToSelect = [...new Set(columnsToSelectInternal)];
 
 	const fieldNodes = columnsToSelect.map(
-		(column: string) =>
+		(column) =>
 			children.find(
 				(childNode) =>
 					(childNode.type === 'field' || childNode.type === 'functionField') && childNode.fieldKey === column,
@@ -203,15 +209,32 @@ async function parseCurrentLevel(
 				name: column,
 				fieldKey: column,
 			},
-	) as FieldNode[];
-
+	) as FieldNode[]; //this enforced typing is awkward
+	logger.debug(fieldNodes);
+	logger.debug(nestedCollectionNodes);
 	return { fieldNodes, nestedCollectionNodes, primaryKeyField };
 }
 
-function getColumnPreprocessor(knex: Knex, schema: SchemaOverview, table: string) {
+interface GetColumnPreprocessorOptions {
+	aliasMap?: AliasMap;
+}
+
+function getColumnPreprocessor(
+	knex: Knex,
+	schema: SchemaOverview,
+	table: string,
+	{ aliasMap }: GetColumnPreprocessorOptions = {},
+) {
 	const helpers = getHelpers(knex);
 
 	return function (fieldNode: FieldNode | FunctionFieldNode | M2ONode): Knex.Raw<string> {
+		const fieldPath = fieldNode.fieldKey.split('.').slice(0, -1).join('.');
+		// if this field exists in the aliasMap return the alias from there
+		if (aliasMap?.[fieldPath]) {
+			const tableAlias = aliasMap[fieldPath]?.alias;
+			const colName = fieldNode.fieldKey.split('.').pop();
+			return knex.ref(`${tableAlias}.${colName}`).as(fieldNode.fieldKey.split('.').join('->'));
+		}
 		let alias = undefined;
 
 		if (fieldNode.name !== fieldNode.fieldKey) {
@@ -244,8 +267,9 @@ async function getDBQuery(
 	table: string,
 	fieldNodes: (FieldNode | FunctionFieldNode)[],
 	query: Query,
+	{ aliasMap } = { aliasMap: Object.create(null) },
 ): Promise<Knex.QueryBuilder> {
-	const preProcess = getColumnPreprocessor(knex, schema, table);
+	const preProcess = getColumnPreprocessor(knex, schema, table, { aliasMap });
 	const queryCopy = clone(query);
 	const helpers = getHelpers(knex);
 
@@ -253,13 +277,13 @@ async function getDBQuery(
 
 	// Queries with aggregates and groupBy will not have duplicate result
 	if (queryCopy.aggregate || queryCopy.group) {
-		const flatQuery = knex.select(fieldNodes.map(preProcess)).from(table);
-
-		return await applyQuery(knex, table, flatQuery, queryCopy, schema).query;
+		const flatQuery = knex.from(table);
+		const { query } = applyQuery(knex, table, flatQuery, queryCopy, schema, { aliasMap });
+		const fields = fieldNodes.map(preProcess);
+		return await query.select(fields);
 	}
 
 	const primaryKey = schema.collections[table]!.primary;
-	const aliasMap: AliasMap = Object.create(null);
 	let dbQuery = knex.from(table);
 	let sortRecords: ColumnSortRecord[] | undefined;
 	const innerQuerySortRecords: { alias: string; order: 'asc' | 'desc' }[] = [];
@@ -469,7 +493,7 @@ function mergeWithParentItems(
 					] == parentItem[schema.collections[nestedNode.relation.related_collection!]!.primary]
 				);
 			});
-
+			logger.debug(parentItem);
 			parentItem[nestedNode.fieldKey].push(...itemChildren);
 
 			if (nestedNode.query.page && nestedNode.query.page > 1) {
@@ -588,7 +612,6 @@ function removeTemporaryFields(
 	} else {
 		const fields: string[] = [];
 		const nestedCollectionNodes: NestedCollectionNode[] = [];
-
 		for (const child of ast.children) {
 			fields.push(child.fieldKey);
 

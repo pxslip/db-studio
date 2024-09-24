@@ -61,16 +61,30 @@ export default function applyQuery(
 	if (query.group) {
 		dbQuery.groupBy(
 			query.group.map((column) => {
-				try {
-					const path = getColumnPath({
-						path: column.split('.'),
-						aliasMap,
-						collection,
-						relations: schema.relations,
-						schema,
-					});
-					return path.columnPath;
-				} catch (exc) {}
+				const path = column.split('.');
+				if (path.length > 2) {
+					try {
+						// this should no-op if the path isn't to a related collection
+						addJoin({
+							path,
+							collection,
+							aliasMap,
+							knex,
+							rootQuery: dbQuery,
+							relations: schema.relations,
+							schema: schema,
+						});
+						// make sure we're using the alias provided in the aliasMap
+						const { columnPath } = getColumnPath({
+							path,
+							aliasMap,
+							collection,
+							relations: schema.relations,
+							schema,
+						});
+						return columnPath;
+					} catch (exc) {}
+				}
 				return getColumn(knex, collection, column, false, schema);
 			}),
 		);
@@ -142,7 +156,11 @@ type AddJoinProps = {
 	schema: SchemaOverview;
 	knex: Knex;
 };
-
+/**
+ *
+ * @param Props
+ * @returns {boolean} whether
+ */
 function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, knex }: AddJoinProps): boolean {
 	let hasMultiRelational = false;
 
