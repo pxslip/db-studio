@@ -14,9 +14,9 @@ const props = withDefaults(
 		showHeader?: boolean;
 		collection: string;
 		category: string;
-		values: string;
+		value: string;
 		data?: Record<string, Record<string, string | number>>[];
-		aggregate: string;
+		aggregate?: string;
 	}>(),
 	{
 		aggregate: 'avg',

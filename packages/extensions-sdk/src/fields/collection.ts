@@ -8,7 +8,7 @@ export interface CollectionAndFieldOptions {
 	allowNone?: boolean;
 }
 
-export default function collectionAndField({
+export function collectionAndField({
 	prefix,
 	name,
 	selectedCollection = '',
