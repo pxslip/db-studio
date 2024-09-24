@@ -35,7 +35,7 @@ export default function applyQuery(
 	dbQuery: Knex.QueryBuilder,
 	query: Query,
 	schema: SchemaOverview,
-	options?: { aliasMap?: AliasMap; isInnerQuery?: boolean; hasMultiRelationalSort?: boolean | undefined }
+	options?: { aliasMap?: AliasMap; isInnerQuery?: boolean; hasMultiRelationalSort?: boolean | undefined },
 ) {
 	const aliasMap: AliasMap = options?.aliasMap ?? Object.create(null);
 	let hasMultiRelationalFilter = false;
@@ -59,7 +59,35 @@ export default function applyQuery(
 	}
 
 	if (query.group) {
-		dbQuery.groupBy(query.group.map((column) => getColumn(knex, collection, column, false, schema)));
+		dbQuery.groupBy(
+			query.group.map((column) => {
+				const path = column.split('.');
+				if (path.length > 2) {
+					try {
+						// this should no-op if the path isn't to a related collection
+						addJoin({
+							path,
+							collection,
+							aliasMap,
+							knex,
+							rootQuery: dbQuery,
+							relations: schema.relations,
+							schema: schema,
+						});
+						// make sure we're using the alias provided in the aliasMap
+						const { columnPath } = getColumnPath({
+							path,
+							aliasMap,
+							collection,
+							relations: schema.relations,
+							schema,
+						});
+						return columnPath;
+					} catch (exc) {}
+				}
+				return getColumn(knex, collection, column, false, schema);
+			}),
+		);
 	}
 
 	if (query.aggregate) {
@@ -73,7 +101,7 @@ export default function applyQuery(
 			dbQuery,
 			query.filter,
 			collection,
-			aliasMap
+			aliasMap,
 		).hasMultiRelationalFilter;
 	}
 
@@ -128,7 +156,11 @@ type AddJoinProps = {
 	schema: SchemaOverview;
 	knex: Knex;
 };
-
+/**
+ *
+ * @param Props
+ * @returns {boolean} whether
+ */
 function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, knex }: AddJoinProps): boolean {
 	let hasMultiRelational = false;
 
@@ -164,7 +196,7 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 				rootQuery.leftJoin(
 					{ [alias]: relation.related_collection! },
 					`${aliasedParentCollection}.${relation.field}`,
-					`${alias}.${schema.collections[relation.related_collection!]!.primary}`
+					`${alias}.${schema.collections[relation.related_collection!]!.primary}`,
 				);
 
 				aliasMap[aliasKey]!.collection = relation.related_collection!;
@@ -173,7 +205,7 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 
 				if (!pathScope) {
 					throw new InvalidQueryException(
-						`You have to provide a collection scope when sorting or filtering on a many-to-any item`
+						`You have to provide a collection scope when sorting or filtering on a many-to-any item`,
 					);
 				}
 
@@ -185,8 +217,8 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 							'=',
 							knex.raw(
 								getHelpers(knex).schema.castA2oPrimaryKey(),
-								`${alias}.${schema.collections[pathScope]!.primary}`
-							)
+								`${alias}.${schema.collections[pathScope]!.primary}`,
+							),
 						);
 				});
 
@@ -200,8 +232,8 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 							'=',
 							knex.raw(
 								getHelpers(knex).schema.castA2oPrimaryKey(),
-								`${aliasedParentCollection}.${schema.collections[parentCollection]!.primary}`
-							)
+								`${aliasedParentCollection}.${schema.collections[parentCollection]!.primary}`,
+							),
 						);
 				});
 
@@ -212,7 +244,7 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 				rootQuery.leftJoin(
 					{ [alias]: relation.collection },
 					`${aliasedParentCollection}.${schema.collections[relation.related_collection!]!.primary}`,
-					`${alias}.${relation.field}`
+					`${alias}.${relation.field}`,
 				);
 
 				aliasMap[aliasKey]!.collection = relation.collection;
@@ -230,7 +262,7 @@ function addJoin({ path, collection, aliasMap, rootQuery, schema, relations, kne
 
 			if (!pathScope) {
 				throw new InvalidQueryException(
-					`You have to provide a collection scope when sorting or filtering on a many-to-any item`
+					`You have to provide a collection scope when sorting or filtering on a many-to-any item`,
 				);
 			}
 
@@ -254,7 +286,7 @@ export function applySort(
 	rootSort: string[],
 	collection: string,
 	aliasMap: AliasMap,
-	returnRecords = false
+	returnRecords = false,
 ) {
 	const relations: Relation[] = schema.relations;
 	let hasMultiRelationalSort = false;
@@ -341,7 +373,7 @@ export function applyFilter(
 	rootQuery: Knex.QueryBuilder,
 	rootFilter: Filter,
 	collection: string,
-	aliasMap: AliasMap
+	aliasMap: AliasMap,
 ) {
 	const helpers = getHelpers(knex);
 	const relations: Relation[] = schema.relations;
@@ -395,7 +427,7 @@ export function applyFilter(
 		dbQuery: Knex.QueryBuilder,
 		filter: Filter,
 		collection: string,
-		logical: 'and' | 'or' = 'and'
+		logical: 'and' | 'or' = 'and',
 	) {
 		for (const [key, value] of Object.entries(filter)) {
 			if (key === '_or' || key === '_and') {
@@ -469,7 +501,7 @@ export function applyFilter(
 					throw new InvalidQueryException(
 						`"${
 							filterPath.includes('_none') ? '_none' : '_some'
-						}" can only be used with top level relational alias field`
+						}" can only be used with top level relational alias field`,
 					);
 				}
 
@@ -490,7 +522,7 @@ export function applyFilter(
 				const { type, special } = validateFilterField(
 					schema.collections[targetCollection]!.fields,
 					stripFunction(filterPath[filterPath.length - 1]!),
-					targetCollection
+					targetCollection,
 				)!;
 
 				validateFilterOperator(type, filterOperator, special);
@@ -500,7 +532,7 @@ export function applyFilter(
 				const { type, special } = validateFilterField(
 					schema.collections[collection]!.fields,
 					stripFunction(filterPath[0]!),
-					collection
+					collection,
 				)!;
 
 				validateFilterOperator(type, filterOperator, special);
@@ -524,7 +556,7 @@ export function applyFilter(
 
 			if (!getFilterOperatorsForType(type).includes(filterOperator as ClientFilterOperator)) {
 				throw new InvalidQueryException(
-					`"${type}" field type does not contain the "_${filterOperator}" filter operator`
+					`"${type}" field type does not contain the "_${filterOperator}" filter operator`,
 				);
 			}
 
@@ -533,7 +565,7 @@ export function applyFilter(
 				!getFilterOperatorsForType('hash').includes(filterOperator as ClientFilterOperator)
 			) {
 				throw new InvalidQueryException(
-					`Field with "conceal" special does not allow the "_${filterOperator}" filter operator`
+					`Field with "conceal" special does not allow the "_${filterOperator}" filter operator`,
 				);
 			}
 		}
@@ -543,7 +575,7 @@ export function applyFilter(
 			operator: string,
 			compareValue: any,
 			logical: 'and' | 'or' = 'and',
-			originalCollectionName?: string
+			originalCollectionName?: string,
 		) {
 			const [table, column] = key.split('.');
 
@@ -755,7 +787,7 @@ export async function applySearch(
 	schema: SchemaOverview,
 	dbQuery: Knex.QueryBuilder,
 	searchQuery: string,
-	collection: string
+	collection: string,
 ): Promise<void> {
 	const fields = Object.entries(schema.collections[collection]!.fields);
 

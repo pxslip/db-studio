@@ -21,3 +21,6 @@ export {
 	getFieldsFromTemplate,
 	getRelationType,
 } from '@db-studio/utils';
+
+import * as fields from './fields/index.js';
+export { fields };

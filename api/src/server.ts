@@ -2,8 +2,8 @@ import { isUpToDate } from '@db-studio/update-check';
 import type { TerminusOptions } from '@godaddy/terminus';
 import { createTerminus } from '@godaddy/terminus';
 import type { Request } from 'express';
-import * as http from 'http';
-import * as https from 'https';
+import { createServer as httpCreateServer, Server, ServerResponse, IncomingMessage } from 'http';
+import { Server as httpsServer } from 'https';
 import { once } from 'lodash-es';
 import qs from 'qs';
 import url from 'url';
@@ -17,12 +17,12 @@ import * as pkg from './utils/package.js';
 
 export let SERVER_ONLINE = true;
 
-export async function createServer(): Promise<http.Server> {
-	const server = http.createServer(await createApp());
+export async function createServer(): Promise<Server> {
+	const server = httpCreateServer(await createApp());
 
 	Object.assign(server, getConfigFromEnv('SERVER_'));
 
-	server.on('request', function (req: http.IncomingMessage & Request, res: http.ServerResponse) {
+	server.on('request', function (req: IncomingMessage & Request, res: ServerResponse) {
 		const startTime = process.hrtime();
 
 		const complete = once(function (finished: boolean) {
@@ -44,7 +44,7 @@ export async function createServer(): Promise<http.Server> {
 			};
 
 			// Compatibility when supporting serving with certificates
-			const protocol = server instanceof https.Server ? 'https' : 'http';
+			const protocol = server instanceof httpsServer ? 'https' : 'http';
 
 			// Rely on url.parse for path extraction
 			// Doesn't break on illegal URLs
@@ -122,7 +122,7 @@ export async function createServer(): Promise<http.Server> {
 				database: getDatabase(),
 				schema: null,
 				accountability: null,
-			}
+			},
 		);
 
 		if (env['NODE_ENV'] !== 'development') {
@@ -158,7 +158,7 @@ export async function startServer(): Promise<void> {
 					database: getDatabase(),
 					schema: null,
 					accountability: null,
-				}
+				},
 			);
 		})
 		.once('error', (err: any) => {
