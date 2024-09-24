@@ -1,5 +1,5 @@
 import { defineInterface } from '@db-studio/utils';
-import InterfaceSystemField from './system-field.vue';
+import InterfaceSystemField from './system-field-deep.vue';
 
 export default defineInterface({
 	id: 'system-field-deep',
