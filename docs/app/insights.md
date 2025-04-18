@@ -1,11 +1,11 @@
 ---
-description: Insights is a Module in Directus that allows rapid, no-code build-out of analytics dashboards.
+description: Insights is a Module in DB Studio that allows rapid, no-code build-out of analytics dashboards.
 readTime: 9 min read
 ---
 
 # Insights
 
-> Insights is a Module in Directus that allows rapid, no-code build-out of analytics dashboards. Regardless of your
+> Insights is a Module in DB Studio that allows rapid, no-code build-out of analytics dashboards. Regardless of your
 > use-case _(be it business intelligence, user progress tracking, web traffic conversions, or whatever!)_ you will be
 > able to setup key data metrics in just a few clicks.
 
@@ -25,7 +25,7 @@ First, create a Dashboard, then fill the Dashboard with Panels.
 
 ## Dashboards Overview
 
-Each Directus Dashboard provides a drag-and-drop canvas where you can create and arrange different Panels to easily
+Each DB Studio Dashboard provides a drag-and-drop canvas where you can create and arrange different Panels to easily
 build out customized analytics. The Dashboard area automatically expands as you add more and more Panels. In theory, a
 Dashboard area can expand infinitely large... but in practice, users will probably only want to build Dashboards as
 large as the screen they will be viewing on. You are able to create as many Dashboards as you need. Additionally, the
@@ -231,93 +231,3 @@ Your variable's data type will need to be a valid match to wherever you are usin
 or JSON variable in a place that requires Datetime data.
 
 :::
-
-## Bar Chart
-
-:::info Availability
-
-The Bar Chart Panel is only available in Directus Cloud and Enterprise Self-Hosted projects.
-
-:::
-
-The Bar Chart Panel allows you to build vertical and horizontal bar charts from data held in collections.
-
-- **Collection** – Selects the Collection you want to analyze.
-- **Horizontal** - If enabled, the bars will be horizontal (originating from the y-axis).
-- **X-Axis** - The Field presented on the x-axis.
-- **Y-Axis** - The Field presented on the y-axis.
-- **Value Decimals** – Changes the number of decimals displayed on both axes.
-- **Color** – Sets the default color of your bars.
-- **Filter** – Allows filtering of Items considered for analysis based on logical conditions.
-- **Conditional Styles** – Changes color of bar if its value is `>`, `>=`, `<`, `<=`, `==`, or `!=` to some defined
-  value.
-
-## Line Chart
-
-:::info Availability
-
-The Line Chart Panel is only available in Directus Cloud and Enterprise Self-Hosted projects.
-
-:::
-
-The Line Chart Panel allows you to build line charts from data held in collections, and are often used for time-series
-data.
-
-- **Collection** – Selects the Collection you want to analyze.
-- **X-Axis** - The Field presented on the x-axis.
-- **Y-Axis** - The Field presented on the y-axis.
-- **Group Aggregation** – Selects the type of aggregation to perform. If you may only select a Field to be presented on
-  the x-axis. [Learn more](#more-on-aggregate-functions).
-- **Function** – Selects the type of aggregate to perform.
-- **Filter** – Allows filtering of Items considered for analysis based on logical conditions.
-- **Value Decimals** – Changes the number of decimals displayed on both axes.
-- **Color** – Sets the default color of your line.
-- **Show Axis Labels** - Selects if and on which axis labels are shown.
-- **Show Tooltip Marker** - If enabled, shows data when a data point is hovered over.
-- **Curve Type** - Selects the style of the curve - smooth, straight, or stepped.
-- **Conditional Styles** – Changes color of line if its value is `>`, `>=`, `<`, `<=`, `==`, or `!=` to some defined
-  value.
-
-## Meter
-
-:::info Availability
-
-The Meter Panel is only available in Directus Cloud and Enterprise Self-Hosted projects.
-
-:::
-
-The Meter Panel takes a maximum value and allows you to show a completion percentage given a second value.
-
-- **Collection** – Selects the Collection you want to analyze.
-- **Field** – Selects the Field to run aggregate function on.
-- **Function** – Selects the type of aggregate to perform.
-- **Maximum** - Sets the maximum value (100% of the meter).
-- **Filter** – Allows filtering of Items considered for analysis based on logical conditions.
-- **Size** - Sets dial to be a full circle or a half circle.
-- **Stroke Width** - Sets thickness of the meter dial line.
-- **Color** – Sets the default color of your dial.
-- **Rounded Stroke** - If enabled, changes the cap style to rounded.
-- **Conditional Styles** – Changes color of meter if its value is `>`, `>=`, `<`, `<=`, `==`, or `!=` to some defined
-  value.
-
-## Pie or Donut Chart
-
-:::info Availability
-
-The Pie and Donut Chart Panels are only available in Directus Cloud and Enterprise Self-Hosted projects.
-
-:::
-
-The Pie and Donut Charts allow you to create segmented charts based on your data.
-
-- **Collection** – Selects the Collection you want to analyze.
-- **Field** – Selects the Field to run aggregate function on.
-- **Function** – Selects the type of aggregate to perform.
-- **Donut** - If enabled, a circle is cut out of the center of the chart.
-- **Show Labels** - If enabled, the percentage value is shown in each segment.
-- **Show Legend** - Selects if and where the legend is shown - none, right, or bottom.
-- **Filter** – Allows filtering of Items considered for analysis based on logical conditions.
-- **Value Decimals** – Changes the number of decimals displayed in the chart segments.
-- **Color** – Sets the default base color of your first segment. Other segments will be variations of this default.
-- **Conditional Styles** – Changes color of segment if its value is `>`, `>=`, `<`, `<=`, `==`, or `!=` to some defined
-  value.

@@ -52,7 +52,7 @@ All configuration options are described in detail below.
 ::: tip Browser FavIcon & Title
 
 The Project Color is also used to set a dynamic FavIcon and the Project Name is used in the browser's page title, making
-it easier to identify different Directus projects.
+it easier to identify different DB Studio projects.
 
 :::
 
@@ -66,7 +66,7 @@ it easier to identify different Directus projects.
   - **Add Link** — To add a new custom link, click **Add Link** and fill in the details below.
     - **Name** — Sets the title of the module link, also shown in a tooltip on hover.
     - **Icon** — Selects an icon for the module button.
-    - **URL** — Should start with a `/` for links within the [Directus Data Studio](/app/overview).
+    - **URL** — Should start with a `/` for links within the [DB Studio Data Studio](/app/overview).
 
 ## Security
 

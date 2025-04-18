@@ -26,7 +26,7 @@ author: Bryant Gillespie
 
 This recipe explains how to schedule content to be published on a future date for dynamic sites.
 
-Scheduling content has fewer steps for a dynamic site. Since you are calling your Directus API at the time that a
+Scheduling content has fewer steps for a dynamic site. Since you are calling your DB Studio API at the time that a
 visitor requests a page from your site, all you need to do is add a filter to your query.
 
 :::info Note
@@ -77,7 +77,7 @@ field `status` that controls the published state.
 
    c. Add the content for other fields and save the Item
 
-### Check the Published Date When Calling the Directus API
+### Check the Published Date When Calling the DB Studio API
 
 - When calling the API, add a [filter rule](/reference/filter-rules) that checks the `date_published` field.
 - Use the `_lte` operator to filter for dates that are less than or equal the current date/time.

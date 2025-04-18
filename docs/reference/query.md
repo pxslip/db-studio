@@ -6,7 +6,7 @@ pageClass: page-reference
 
 # Global Query Parameters
 
-> Most Directus API Endpoint operations can be manipulated with the following parameters. It is important to understand
+> Most DB Studio API Endpoint operations can be manipulated with the following parameters. It is important to understand
 > them to get the most out of the platform.
 
 - [Fields](#fields)

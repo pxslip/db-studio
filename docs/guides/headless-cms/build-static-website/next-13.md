@@ -1,5 +1,5 @@
 ---
-description: This guide shows you how build a website with Next 13 and Directus as a Headless CMS.
+description: This guide shows you how build a website with Next 13 and DB Studio as a Headless CMS.
 tags: []
 skill_level:
 directus_version: 9.21.4
@@ -7,23 +7,21 @@ author_override:
 author: Kevin Lewis
 ---
 
-# Build a Website With Next 13 and the Directus JavaScript SDK
+# Build a Website With Next 13 and the DB Studio JavaScript SDK
 
 > {{ $frontmatter.description }}
 
 [Next](https://nextjs.org/) is a popular JavaScript framework based on React.js. In this tutorial, you will learn how to
-build a website using Directus as a CMS. You will store, retrieve, and use global metadata such as the site title,
-create new pages dynamically based on Directus items, and build a blog.
+build a website using DB Studio as a CMS. You will store, retrieve, and use global metadata such as the site title,
+create new pages dynamically based on DB Studio items, and build a blog.
 
 ## Before You Start
 
 You will need:
 
 - To install Node.js and a code editor on your computer.
-- To sign up for a Directus Cloud account.
+- Have set up a DB Studio instance
 - Some knowledge of React.js and Next.
-
-Create a new Directus Cloud project - any tier and configuration is suitable for this tutorial.
 
 Open your terminal and run the following command to create a new Next project:
 
@@ -45,20 +43,21 @@ Open `my-website` in your code editor.
 
 ## Create Helper For @wbce-d9/sdk
 
-To share a single instance of the Directus JavaScript SDK between multiple pages in this project, create a single helper
-file that can be imported later. Create a new directory called `lib` and a new file called `directus.js` inside of it.
+To share a single instance of the DB Studio JavaScript SDK between multiple pages in this project, create a single
+helper file that can be imported later. Create a new directory called `lib` and a new file called `studio.js` inside of
+it.
 
 ```js
-import { Directus } from '@db-studio/sdk';
-const directus = new Directus('https://your-project-id.directus.app/');
-export default directus;
+import { Studio } from '@db-studio/sdk';
+const studio = new Studio('https://your.studio.url');
+export default studio;
 ```
 
-Ensure your Project URL is correct when initializing the Directus JavaScript SDK.
+Ensure your Project URL is correct when initializing the DB Studio JavaScript SDK.
 
 ## Using Global Metadata and Settings
 
-In your Directus project, navigate to Settings -> Data Model and create a new collection called `global`. Under the
+In your DB Studio project, navigate to Settings -> Data Model and create a new collection called `global`. Under the
 Singleton option, select 'Treat as a single object', as this collection will have just a single entry containing global
 website metadata.
 
@@ -74,10 +73,10 @@ give Read access to the Global collection.
 Inside of the `app` directory, create a new file called `page.tsx` inside of it.
 
 ```js
-import directus from 'lib/directus';
+import studio from 'lib/studio';
 
 async function getGlobals() {
-	const { data } = await directus.items('global').readByQuery();
+	const { data } = await studio.items('global').readByQuery();
 	return data;
 }
 
@@ -93,8 +92,8 @@ export default async function HomePage() {
 ```
 
 Type `npm run dev` in your terminal to start the Next development server and open `http://localhost:3000` in your
-browser. You should see data from your Directus Global collection in your page. Some additional files will be created by
-Next that it expects, but do not yet exist - these can be safely ignored for now.
+browser. You should see data from your DB Studio Global collection in your page. Some additional files will be created
+by Next that it expects, but do not yet exist - these can be safely ignored for now.
 
 ## Creating Pages With Directus
 
@@ -109,12 +108,12 @@ Inside of `app`, create a new directory called `[slug]` with a file called `page
 single file can be used for all of the top-level pages.
 
 ```js
-import directus from 'lib/directus';
+import studio from 'lib/studio';
 import { notFound } from 'next/navigation';
 
 async function getPage(slug) {
 	try {
-		const page = await directus.items('pages').readOne(slug);
+		const page = await studio.items('pages').readOne(slug);
 		return page;
 	} catch (error) {
 		notFound();
@@ -132,7 +131,7 @@ export default async function DynamicPage({ params }) {
 }
 ```
 
-Go to `http://localhost:3000/about`, replacing `about` with any of your item slugs. Using the Directus JavaScript SDK,
+Go to `http://localhost:3000/about`, replacing `about` with any of your item slugs. Using the DB Studio JavaScript SDK,
 the single item with that slug is retrieved, and the page should show your data. `readOne()` only checks against your
 `slug` Primary ID Field.
 
@@ -165,10 +164,10 @@ Create 3 items in the posts collection -
 Inside of the `app` directory, create a new subdirectory called `blog` and a new file called `page.tsx` inside of it.
 
 ```js
-import directus from 'lib/directus';
+import studio from 'lib/studio';
 
 async function getPosts() {
-	const posts = await directus.items('posts').readByQuery({
+	const posts = await studio.items('posts').readByQuery({
 		fields: ['slug', 'title', 'publish_date', 'author.name'],
 		sort: ['-publish_date'],
 	});
@@ -217,12 +216,12 @@ Each blog post links to a page that does not yet exist. In the `app/blog` direct
 `[slug]`, and within it a `page.tsx` file:
 
 ```js
-import directus from 'lib/directus';
+import studio from 'lib/studio';
 import { notFound } from 'next/navigation';
 
 async function getPost(slug) {
 	try {
-		const post = await directus.items('posts').readOne(slug, {
+		const post = await studio.items('posts').readOne(slug, {
 			fields: ['*.*'],
 		});
 		return post;
@@ -235,7 +234,7 @@ export default async function DynamicPage({ params }) {
 	const post = await getPost(params.slug);
 	return (
 		<>
-			<img src={`${directus.url}assets/${post.image.filename_disk}?width=600`} alt="" />
+			<img src={`${studio.url}assets/${post.image.filename_disk}?width=600`} alt="" />
 			<h1>{post.title}</h1>
 			<div dangerouslySetInnerHTML={{ __html: post.content }}></div>
 		</>
@@ -245,11 +244,11 @@ export default async function DynamicPage({ params }) {
 
 Some key notes about this code snippet.
 
-- In the `<img>` tag, `directus.url` is the value provided when creating the Directus plugin.
+- In the `<img>` tag, `studio.url` is the value provided when creating the DB Studio plugin.
 - The `width` attribute demonstrates Directus' built-in image transformations.
 - Once again, `dangerouslySetInnerHTML` should only be used if all content is trusted.
 - Because almost-all fields are used in this page, including those from the `image` relational field, the `fields`
-  property when using the Directus JavaScript SDK can be set to `*.*`.
+  property when using the DB Studio JavaScript SDK can be set to `*.*`.
 
 Click on any of the blog post links, and it will take you to a blog post page complete with a header image.
 
@@ -270,7 +269,7 @@ above the `{children}` rendering, add a navigation. Don't forget to use your spe
 
 ## Next Steps
 
-Through this guide, you have set up a Next project, created a Directus helper, and used it to query data. You have used
+Through this guide, you have set up a Next project, created a DB Studio helper, and used it to query data. You have used
 a singleton collection for global metadata, dynamically created pages, as well as blog listing and post pages.
 
 If you want to change what is user-accessible, consider setting up more restrictive roles and accessing only valid data

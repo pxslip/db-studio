@@ -1,5 +1,5 @@
 ---
-description: Learn how to migrate your data model to a new Directus project using Hoppscotch.
+description: Learn how to migrate your data model to a new DB Studio project using Hoppscotch.
 tags: []
 skill_level:
 directus_version: 9.23.0
@@ -23,7 +23,7 @@ Directus' schema migration endpoints allow users to retrieve a project's data mo
 project.
 
 This is useful if you make changes to a data model in a development project and need to apply them to a production
-project, or to move from a self-hosted project to Directus Cloud.
+project, or to move from a self-hosted project to DB Studio Cloud.
 
 [Hoppscotch](https://hoppscotch.io/) is an open source API explorer. It is used in this recipe to make requests to your
 Directus project's API without writing code.
@@ -36,13 +36,13 @@ You must be an admin user to use these endpoints and follow this guide.
 
 :::
 
-You should have two Directus projects - this guide will refer to them as the "source" and the "target". Before starting,
-make sure you have a static access token for both projects.
+You should have two DB Studio projects - this guide will refer to them as the "source" and the "target". Before
+starting, make sure you have a static access token for both projects.
 
 ### Retrieve Data Model Snapshot From Source Project
 
 1. Make sure `GET` is selected in the method dropdown.
-2. In the URL field, enter your source Directus project URL followed by `/schema/snapshot`.
+2. In the URL field, enter your source DB Studio project URL followed by `/schema/snapshot`.
 3. In the Parameters tab, set a query parameter called `access_token` with the access token for your source project.
 4. Click the **Send** button to send the request.
 5. Copy the JSON response with your data model snapshot.
@@ -52,7 +52,7 @@ make sure you have a static access token for both projects.
 This section will create a "diff" that describes all differences between your source and target project's data models.
 
 1. Make sure `POST` is selected in the method dropdown.
-2. In the URL field, enter your target Directus project URL followed by `/schema/diff`.
+2. In the URL field, enter your target DB Studio project URL followed by `/schema/diff`.
 3. In the Parameters tab, set a query parameter called `access_token` with the access token for your target project.
 4. In the Body tab, set the Content Type to `application/json` and paste the JSON response from the snapshot. You must
    only paste the contents of the `data` property.
@@ -62,7 +62,7 @@ This section will create a "diff" that describes all differences between your so
 ### Apply Diff To Target Project
 
 1. Make sure `POST` is selected in the method dropdown.
-2. In the URL field, enter your target Directus project URL followed by `/schema/apply`.
+2. In the URL field, enter your target DB Studio project URL followed by `/schema/apply`.
 3. In the Parameters tab, set a query parameter called `access_token` with the access token for your source project.
 4. In the Body tab, set the Content Type to `application/json` and paste the JSON response from the diff. You must only
    paste the contents of the `data` property.

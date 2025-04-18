@@ -38,7 +38,7 @@ This optional filename is also used in the Content-Disposition header when the `
 ::: warning Direct File Access
 
 While you may _technically_ be able to expose your storage adapters root file system and access your raw files through
-there, it is recommended that you always use the Directus API. This is the only way that you can take advantage of file
+there, it is recommended that you always use the DB Studio API. This is the only way that you can take advantage of file
 permissions and other built-in features.
 
 :::
@@ -95,7 +95,7 @@ grained control:
 
 ### Advanced Transformations
 
-For even more advanced control over the file generation, Directus exposes
+For even more advanced control over the file generation, DB Studio exposes
 [the full `sharp` API](https://sharp.pixelplumbing.com/api-operation) through the `transforms` query parameter. This
 parameter accepts a two-dimensional array with the format `[Operation, ...arguments]`.
 
@@ -204,7 +204,7 @@ Location of the file.
 Tags for the file.
 
 `metadata` **object**\
-Any additional metadata Directus was able to scrape from the file. For images, this includes EXIF, IPTC, and ICC information.
+Any additional metadata DB Studio was able to scrape from the file. For images, this includes EXIF, IPTC, and ICC information.
 
 ```json
 {

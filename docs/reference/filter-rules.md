@@ -161,7 +161,7 @@ into Logical Operators. However, they cannot be sub-nested into Filter Rules.
 
 ### Some vs None in One-to-Many
 
-When applying filters to a one-to-many field, Directus will default to a "some" search, for example in:
+When applying filters to a one-to-many field, DB Studio will default to a "some" search, for example in:
 
 ```json
 {

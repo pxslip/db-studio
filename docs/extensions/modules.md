@@ -12,7 +12,7 @@ readTime: 5 min read
 
 The entrypoint of your module is the `index` file inside the `src/` folder of your extension package. It exports a
 configuration object with options to configure the behavior of your module. When loading your module, this object is
-imported by the Directus host.
+imported by the DB Studio host.
 
 Example of an entrypoint:
 
@@ -37,7 +37,7 @@ export default {
 - `id` — The unique key for this module. It is good practice to scope proprietary modules with an author prefix.
 - `name` — The human-readable name for this module.
 - `icon` — An icon name from the [material icon set](/getting-started/glossary#material-icons), or the extended list of
-  Directus custom icons.
+  DB Studio custom icons.
 - `color` — A color associated with the module.
 - `routes` — Details the routes in your module. The routes are registered as nested routes with the module's `id`
   serving as the base path.
@@ -91,7 +91,7 @@ Before a module appears in the module bar, it has to be enabled inside the proje
 
 ::: warning Vue Version
 
-The Directus App uses Vue 3. There might be 3rd party libraries that aren't yet compatible with Vue 3.
+The DB Studio App uses Vue 3. There might be 3rd party libraries that aren't yet compatible with Vue 3.
 
 :::
 
@@ -123,7 +123,7 @@ If you prefer to use the Vue Options API, you can inject the `api` and `stores` 
 
 ## Example: Accessing the API from within your extension
 
-The Directus App's Vue app instance provides a field called `api`, which can be injected into Vue components using
+The DB Studio App's Vue app instance provides a field called `api`, which can be injected into Vue components using
 [Vue's inject framework](https://v3.vuejs.org/guide/component-provide-inject.html). This `api` field contains a property
 called `api`, which is an authenticated Axios instance. Here's an example of how to use it:
 

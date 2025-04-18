@@ -25,43 +25,38 @@ Collections are data tables. Typically, you access items within a collection in 
 
 System collections store the data and configuration details required to power your project.
 
-Since system collections store information that powers your Directus project. You cannot reconfigure system collections
+Since system collections store information that powers your DB Studio project. You cannot reconfigure system collections
 or any of their default fields, as any reconfigurations would break your project. However, you _can_ create and
 configure new fields on a system collection. This lets you safely customize your data model as desired.
 
 System collections are not displayed in the Content Module. The following table will go over the logic and functionality
 each system collection is responsible for, as well as where to find relevant App and API documentation.
 
-| System Collection | Purpose                                                                                                                              | APP                                                                               | API                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- | ------------------------------------------------ |
-| Activity          | Tracks and stores all events within Directus, giving full accountability over everything.                                            | [Activity Log](/configuration/activity-log)                                       | [Activity](/reference/system/activity)           |
-| Collections       | Stores data table & configuration details each and every Collection.                                                                 | [Collections](/configuration/data-model/collections)                              | [Collections](/reference/system/collections)     |
-| Dashboards        | Stores dashboard configuration details and all relationally linked panels.                                                           | [Insights](/app/insights)                                                         | **N/A**                                          |
-| Fields            | Stores configuration details for each field.                                                                                         | [Fields](/configuration/data-model/fields/)                                       | [Fields](/reference/system/fields)               |
-| Files             | This stores file location from asset storage as well as any data associated with that file.                                          | [File Library](/app/file-library)                                                 | [Files](/reference/files)                        |
-| Flows             | Stores basic logic required for Flows, which enable event-triggered task automation.                                                 | [Flows](/configuration/flows)                                                     | [Flows](/reference/system/flows)                 |
-| Folders           | Stores information required for Folders, which provide virtual file asset management.                                                | [Folders](/app/file-library#folders)                                              | [Folders](/reference/system/folders)             |
-| Migrations        | Used by our install/upgrade process to track when migration scripts for a specific release have been run.                            | It has no relevant app functionality.                                             | **N/A**                                          |
-| Notifications     | Stores details about in-app notifications.                                                                                           | [Module Bar](/app/overview#_1-module-bar) and [Sidebar](/app/overview#_4-sidebar) | [Notifications](/reference/system/notifications) |
-| Operations        | Stores information required for Operations, which are a part of [Flows](#flows).                                                     | [Operations](/configuration/flows)                                                | [Operations](/reference/system/operations.md)    |
-| Panels            | This stores information about individual analytics panels, which are displayed on [Dashboards](#dashboards).                         | [Insights](/app/insights)                                                         | **N/A**                                          |
-| Permissions       | This stores the access permissions configured for roles.                                                                             | [Users, Roles & Permissions](/configuration/users-roles-permissions)              | [Permissions](/reference/system/permissions)     |
-| Presets           | This stores details for presets and bookmarks.                                                                                       | [Presents & Bookmarks](/configuration/presets-bookmarks)                          | [Presets](/reference/system/presets)             |
-| Relations         | This stores information about relationships between collections.                                                                     | [Relationships](/configuration/data-model/relationships)                          | [Relations](/reference/system/relations)         |
-| Revisions         | Revisions are changes/edits made to Items. Directus keeps track of edits made, so you're able to revert to a previous state at will. | [Revert an Item](/app/content/items#revert-an-item)                               | [Revisions](/reference/system/revisions)         |
-| Roles             | Stores information about each role created.                                                                                          | [Users, Roles, and Permissions](/configuration/users-roles-permissions)           | [Roles](/reference/system/roles)                 |
-| Sessions          | Stores information about each user session, for system purposes.                                                                     | **N/A**                                                                           | **N/A**                                          |
-| Settings          | Stores all configurations made within **Settings > Project Settings**.                                                               | [Project Settings](/configuration/project-settings)                               | [settings](/reference/system/settings)           |
-| Shares            | Stores all information regarding data shares.                                                                                        | [Data Sharing](/app/content/shares)                                               |                                                  |
-| Users             | Stores information about each user within the platform.                                                                              | [User Directory](/app/user-directory)                                             | [Users](/reference/system/relations)             |
-| Webhooks          | Stores all information about configured webhooks.                                                                                    | [Webhooks](/configuration/webhooks)                                               | [Webhooks](/reference/system/relations)          |
+| System Collection | Purpose                                                                                                                               | APP                                                                               | API                                              |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------ |
+| Activity          | Tracks and stores all events within DB Studio, giving full accountability over everything.                                            | [Activity Log](/configuration/activity-log)                                       | [Activity](/reference/system/activity)           |
+| Collections       | Stores data table & configuration details each and every Collection.                                                                  | [Collections](/configuration/data-model/collections)                              | [Collections](/reference/system/collections)     |
+| Dashboards        | Stores dashboard configuration details and all relationally linked panels.                                                            | [Insights](/app/insights)                                                         | **N/A**                                          |
+| Fields            | Stores configuration details for each field.                                                                                          | [Fields](/configuration/data-model/fields/)                                       | [Fields](/reference/system/fields)               |
+| Files             | This stores file location from asset storage as well as any data associated with that file.                                           | [File Library](/app/file-library)                                                 | [Files](/reference/files)                        |
+| Flows             | Stores basic logic required for Flows, which enable event-triggered task automation.                                                  | [Flows](/configuration/flows)                                                     | [Flows](/reference/system/flows)                 |
+| Folders           | Stores information required for Folders, which provide virtual file asset management.                                                 | [Folders](/app/file-library#folders)                                              | [Folders](/reference/system/folders)             |
+| Migrations        | Used by our install/upgrade process to track when migration scripts for a specific release have been run.                             | It has no relevant app functionality.                                             | **N/A**                                          |
+| Notifications     | Stores details about in-app notifications.                                                                                            | [Module Bar](/app/overview#_1-module-bar) and [Sidebar](/app/overview#_4-sidebar) | [Notifications](/reference/system/notifications) |
+| Operations        | Stores information required for Operations, which are a part of [Flows](#flows).                                                      | [Operations](/configuration/flows)                                                | [Operations](/reference/system/operations.md)    |
+| Panels            | This stores information about individual analytics panels, which are displayed on [Dashboards](#dashboards).                          | [Insights](/app/insights)                                                         | **N/A**                                          |
+| Permissions       | This stores the access permissions configured for roles.                                                                              | [Users, Roles & Permissions](/configuration/users-roles-permissions)              | [Permissions](/reference/system/permissions)     |
+| Presets           | This stores details for presets and bookmarks.                                                                                        | [Presents & Bookmarks](/configuration/presets-bookmarks)                          | [Presets](/reference/system/presets)             |
+| Relations         | This stores information about relationships between collections.                                                                      | [Relationships](/configuration/data-model/relationships)                          | [Relations](/reference/system/relations)         |
+| Revisions         | Revisions are changes/edits made to Items. DB Studio keeps track of edits made, so you're able to revert to a previous state at will. | [Revert an Item](/app/content/items#revert-an-item)                               | [Revisions](/reference/system/revisions)         |
+| Roles             | Stores information about each role created.                                                                                           | [Users, Roles, and Permissions](/configuration/users-roles-permissions)           | [Roles](/reference/system/roles)                 |
+| Sessions          | Stores information about each user session, for system purposes.                                                                      | **N/A**                                                                           | **N/A**                                          |
+| Settings          | Stores all configurations made within **Settings > Project Settings**.                                                                | [Project Settings](/configuration/project-settings)                               | [settings](/reference/system/settings)           |
+| Shares            | Stores all information regarding data shares.                                                                                         | [Data Sharing](/app/content/shares)                                               |                                                  |
+| Users             | Stores information about each user within the platform.                                                                               | [User Directory](/app/user-directory)                                             | [Users](/reference/system/relations)             |
+| Webhooks          | Stores all information about configured webhooks.                                                                                     | [Webhooks](/configuration/webhooks)                                               | [Webhooks](/reference/system/relations)          |
 
 ## Create a Collection
-
-<video title="Create a Collection" autoplay playsinline muted loop controls>
-	<source src="https://cdn.directus.io/docs/v9/configuration/data-model/collections/collections-20220805/create-a-collection-20220805A.mp4
-" type="video/mp4" />
-</video>
 
 To create a collection, follow these steps.
 
@@ -91,21 +86,21 @@ displayed with [Collection Naming Translations](#collection-setup).
 
 :::warning Composite Keys
 
-Directus does not currently support composite keys. If your project uses composite keys, you will need to make an
+DB Studio does not currently support composite keys. If your project uses composite keys, you will need to make an
 adjustment to the data model.
 
 :::
 
 :::warning SQL Views
 
-Directus does not currently support creation of virtual tables via SQL Views.
+DB Studio does not currently support creation of virtual tables via SQL Views.
 
 :::
 
 ::: tip Database Tables
 
 Remember, a collection is simply a database table. Therefore, you can import or create a table directly in the database
-and it will automatically appear within your Directus project. The first time you manage that table, a
+and it will automatically appear within your DB Studio project. The first time you manage that table, a
 `directus_collections` record will be created with default values.
 
 :::
@@ -199,8 +194,8 @@ These controls allow you to modify how the collection is displayed within the Co
 
 :::tip Collection Naming Translations
 
-By default, Directus uses the [Title Formatter](/getting-started/glossary#title-formatter) to display collection keys as
-human readable names, but you can also use translations to explicitly rename more technical table keys.
+By default, DB Studio uses the [Title Formatter](/getting-started/glossary#title-formatter) to display collection keys
+as human readable names, but you can also use translations to explicitly rename more technical table keys.
 
 :::
 
@@ -286,7 +281,7 @@ You can also set this field to be **Hidden** so it doesn't show up within the It
 
 ### Accountability
 
-By default, your Directus Project tracks all [activity](/reference/system/activity) and
+By default, your DB Studio Project tracks all [activity](/reference/system/activity) and
 [revisions](/reference/system/revisions) for collections. However, you can override this and choose what data is
 tracked.
 
