@@ -20,7 +20,7 @@ const props = withDefaults(
 	defineProps<{
 		height: number;
 		showHeader?: boolean;
-		data?: object[];
+		data?: Record<string, any>[]; // can we narrow the value type? I believe 
 		id: string;
 		now: Date;
 		collection: string;
@@ -118,7 +118,7 @@ function setupChart() {
 
 	const allDates = props.data.map((metric) => {
 		return toIncludeTimezoneOffset(metric.group, isFieldTimestamp);
-	});
+	}).filter((date) => !isNaN(date)); // If the year of the metric is null, the date will be NaN and break the chart
 
 	const minDate = Math.min(...allDates);
 	const maxDate = Math.max(...allDates);
