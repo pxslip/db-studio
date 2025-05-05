@@ -32,9 +32,10 @@ export function deepGetSpread(obj: PossibleValues, key: string) {
 							if (Array.isArray(spread)) {
 								values.push(...spread);
 							} else {
+								values.push(spread);
 							}
 						}
-					} else if (fieldKeyParts.length > 1) {
+					} else if (fieldKeyParts.length > 0) {
 						const spread = deepGetSpread(item, fieldKeyParts.join('.'));
 						if (Array.isArray(spread)) {
 							values.push(...spread);

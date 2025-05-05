@@ -31,6 +31,7 @@
 		"templates",
 		"!**/*.test.{js,d.ts}"
 	],
+	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "tsc --build",
 		"dev": "tsc --watch",

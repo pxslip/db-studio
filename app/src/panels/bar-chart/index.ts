@@ -16,55 +16,18 @@ export default definePanel({
 		if (required.some((field) => !Object.keys(options).includes(field))) {
 			return;
 		}
-		let { collection, category, value, aggregate } = options;
-		const fields = useFieldsStore();
-		// test if values is a relational field
-		const valueField = fields.getField(collection, value);
-		// const valueType = getLocalTypeForField(collection, values);
-		// if (valueType && ['o2m', 'm2m'].includes(valueType)) {
-		// 	values = `${valueField?.collection}.`;
-		// }
+		let { collection, category, value } = options;
 		return {
 			collection: collection,
 			query: {
-				group: [category],
-				aggregate: { [aggregate ?? 'avg']: [value] },
 				limit: -1,
+				fields: [category, value],
+				// group: [category],
+				// aggregate: { [aggregate ?? 'avg']: [value] },
 			},
 		};
 	},
-	options: ({ options }) => {
-		const aggregateRequiresNumber = computed(() => {
-			if (options?.['aggregate']) {
-				if (['avg', 'avgDistinct', 'sum', 'sumDistinct', 'min', 'max'].includes(options['aggregate'])) {
-					return true;
-				}
-			}
-			return false;
-		});
-		const valueFields = computed(() => {
-			if (options?.['collection']) {
-				const { fields } = useCollection(options['collection']);
-				const choices = fields.value
-					.map<DropdownOption | null>((field) => {
-						if (field !== null && field !== undefined) {
-							const type = getLocalTypeForField(field.collection, field.field);
-							if (type !== null && !['alias', 'group', 'presentation', 'm2o', 'm2a', 'm2m'].includes(type)) {
-								return { value: field.field, text: `${field.name} - ${field.type}`, type: field.type };
-							}
-						}
-						return null;
-					})
-					.filter((value) => value !== null);
-				if (aggregateRequiresNumber.value) {
-					choices.filter((option) => {
-						return option?.type && ['integer', 'bigInteger', 'float', 'decimal'].includes(option.type);
-					});
-				}
-				return choices;
-			}
-			return [];
-		});
+	options: () => {
 		return [
 			{
 				field: 'collection',
@@ -84,7 +47,7 @@ export default definePanel({
 				name: 'Category Field',
 				type: 'string',
 				meta: {
-					interface: 'system-field',
+					interface: 'system-field-deep',
 					required: true,
 					width: 'half',
 					options: {
@@ -95,7 +58,7 @@ export default definePanel({
 				},
 			},
 			aggregateValue({
-				field: 'value',
+				field: 'values',
 				allowForeignKeys: true,
 				allowPrimaryKey: true,
 				collectionField: 'collection',
