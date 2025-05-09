@@ -6,6 +6,9 @@ import * as dateHelpers from './date/index.js';
 import * as fnHelpers from './fn/index.js';
 import * as geometryHelpers from './geometry/index.js';
 import * as schemaHelpers from './schema/index.js';
+import { getEnv } from '../../env.js';
+
+const { DB_PREFIX: prefix = 'directus' } = getEnv();
 
 export function getHelpers(database: Knex) {
 	const client = getDatabaseClient(database);
@@ -20,6 +23,10 @@ export function getHelpers(database: Knex) {
 export function getFunctions(database: Knex, schema: SchemaOverview) {
 	const client = getDatabaseClient(database);
 	return new fnHelpers[client](database, schema);
+}
+
+export function appTableName(table: string) {
+	return `${prefix}_${table}`;
 }
 
 export type Helpers = ReturnType<typeof getHelpers>;

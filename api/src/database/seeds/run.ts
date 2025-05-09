@@ -1,16 +1,15 @@
 import type { Field, Type } from '@db-studio/types';
 import fse from 'fs-extra';
-import yaml from 'js-yaml';
 import type { Knex } from 'knex';
 import { isObject } from 'lodash-es';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import path from 'path';
-import { getHelpers } from '../helpers/index.js';
+import { appTableName, getHelpers } from '../helpers/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-type TableSeed = {
+export interface TableSeed {
 	table: string;
 	columns: {
 		[column: string]: {
@@ -28,11 +27,18 @@ type TableSeed = {
 			};
 		};
 	};
-};
+}
 
-export default async function runSeed(database: Knex): Promise<void> {
+interface RunSeedOptions {
+	prefix: string;
+}
+
+export default async function runSeed(
+	database: Knex,
+	{ prefix }: RunSeedOptions = { prefix: 'directus' }
+): Promise<void> {
 	const helpers = getHelpers(database);
-	const exists = await database.schema.hasTable('directus_collections');
+	const exists = await database.schema.hasTable(appTableName('collections'));
 
 	if (exists) {
 		throw new Error('Database is already installed');
@@ -41,13 +47,11 @@ export default async function runSeed(database: Knex): Promise<void> {
 	const tableSeeds = await fse.readdir(path.resolve(__dirname));
 
 	for (const tableSeedFile of tableSeeds) {
-		if (tableSeedFile.startsWith('run')) continue;
+		if (tableSeedFile.startsWith('run')) continue; //Skip the actual run file itself (i.e. this file)
 
-		const yamlRaw = await fse.readFile(path.resolve(__dirname, tableSeedFile), 'utf8');
+		const seedData = (await import(path.resolve(__dirname, tableSeedFile))) as TableSeed;
 
-		const seedData = yaml.load(yamlRaw) as TableSeed;
-
-		await database.schema.createTable(seedData.table, (tableBuilder) => {
+		await database.schema.createTable(appTableName(seedData.table), (tableBuilder) => {
 			for (const [columnName, columnInfo] of Object.entries(seedData.columns)) {
 				let column: Knex.ColumnBuilder;
 
@@ -99,7 +103,7 @@ export default async function runSeed(database: Knex): Promise<void> {
 				}
 
 				if (columnInfo.references) {
-					column.references(columnInfo.references.column).inTable(columnInfo.references.table);
+					column.references(columnInfo.references.column).inTable(appTableName(columnInfo.references.table));
 				}
 			}
 		});
