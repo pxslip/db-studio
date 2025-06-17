@@ -127,6 +127,11 @@ export class CollectionsService {
 
 					const fieldsService = new FieldsService({ knex: trx, schema: this.schema });
 
+					// see if knex is connected to a postgres database, if so check if the `DB_PG_CREATE_ROLE` env variable is set and temporarily change to that role
+					if (this.knex.client === 'pg' && env['DB_PG_CREATE_ROLE']) {
+						// Using `LOCAL` to set the role for the current transaction
+						await trx.raw(`SET LOCAL ROLE "${env['DB_PG_CREATE_ROLE']}"`);
+					}
 					await trx.schema.createTable(payload.collection, (table) => {
 						for (const field of payload.fields!) {
 							if (field.type && ALIAS_TYPES.includes(field.type) === false) {
