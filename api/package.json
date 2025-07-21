@@ -88,7 +88,7 @@
 		"date-fns": "2.29.3",
 		"deep-diff": "1.0.2",
 		"destroy": "1.2.0",
-		"dotenv": "16.0.3",
+		"dotenv": "17.2.0",
 		"encodeurl": "1.0.2",
 		"eventemitter2": "6.4.9",
 		"execa": "7.1.1",
