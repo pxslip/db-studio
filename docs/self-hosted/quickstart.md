@@ -55,10 +55,10 @@ To learn more, visit the [Docker Guide](/self-hosted/docker-guide).
 
 ## 2. Login to App
 
-With the server running, you're now able to login to your new Directus project and start using it.
+With the server running, you're now able to login to your new DB Studio project and start using it.
 
 Our start command stated that the server started at port `8055`, which means we can navigate to `http://localhost:8055`
-to open Directus in the browser.
+to open DB Studio in the browser.
 
 Login using the admin credentials you configured during the installation in Step 1.
 
@@ -80,7 +80,7 @@ To learn more, see our documentation [Collections](/app/content/collections).
 With the Collection created, it's time to start adding some Fields. Click the **"Create Field"** button, and select
 **"Input"**:
 
-We'll be calling our Field `title`. While Directus offers a range of powerful field customization options, we'll be
+We'll be calling our Field `title`. While DB Studio offers a range of powerful field customization options, we'll be
 sticking to the defaults for now. These defaults use the "String" datatype.
 
 ::: tip More Info on Fields
@@ -106,7 +106,7 @@ To learn more, see our documentation on [Items](/app/content/items).
 
 ## 6. Set Role/Public Permissions
 
-By default, all content entered into Directus is considered private. This means that no data will be returned by the
+By default, all content entered into DB Studio is considered private. This means that no data will be returned by the
 API, unless requested by an authenticated user that has the correct permissions. In order to have the API return our
 items, we'll have to setup some permissions. Navigate to **Settings Module <span mi icon dark>chevron_right</span> Roles
 & Permissions**.

@@ -1,13 +1,13 @@
 ---
 description:
-  Flows enable custom, event-driven data processing and task automation within Directus. Each flow is composed of one
+  Flows enable custom, event-driven data processing and task automation within DB Studio. Each flow is composed of one
   trigger, followed by a series of operations.
 readTime: 5 min read
 ---
 
 # Flows
 
-> Flows enable custom, event-driven data processing and task automation within Directus. Each flow is composed of one
+> Flows enable custom, event-driven data processing and task automation within DB Studio. Each flow is composed of one
 > trigger, followed by a series of operations.
 
 :::tip Before You Begin
@@ -69,9 +69,9 @@ manage data: _send off emails, push in-app notifications, send webhooks, and bey
 
 To put it in conceptual terms, operations do three things:
 
-- **Get data** from Directus or another outside service.
+- **Get data** from DB Studio or another outside service.
 - **Process data** a.k.a. transform it, validate it, or whatever.
-- **Send data** to Directus or another outside service.
+- **Send data** to DB Studio or another outside service.
 
 :::tip Developers
 
@@ -136,7 +136,7 @@ You'll now see your trigger in an empty grid area. Its time to start adding oper
 
 5. On the trigger panel, click <span mi>add</span> and the **Create Operation** side drawer will open.
 6. Choose a **Name**, an [operation](/configuration/flows/operations) type, and configure as desired.\
-   Directus will convert the name into a unique operation key, used on the [data chain](#the-data-chain).\
+   DB Studio will convert the name into a unique operation key, used on the [data chain](#the-data-chain).\
    If you don't choose a name, the system will auto-generate a name and key for you.
 7. Next, click <span mi btn>done</span> in the page header to confirm and return to the flow grid area.
 8. From here, you can make the following optional configurations:

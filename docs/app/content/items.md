@@ -99,8 +99,8 @@ model settings.
 
 ## Revert an Item
 
-As you update Field Values on Items, Directus saves these [Revisions](/getting-started/glossary#revisions), and they can
-be compared side-by-side to the current state. To revert an Item, follow these steps.
+As you update Field Values on Items, DB Studio saves these [Revisions](/getting-started/glossary#revisions), and they
+can be compared side-by-side to the current state. To revert an Item, follow these steps.
 
 1. Navigate to the Content Module and select the desired Collection.
 2. Select the desired Item to open the Item Page.

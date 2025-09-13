@@ -14,7 +14,7 @@ readTime: 4 min read
 
 1. Backup your project
 2. Run `npm update`
-3. Run `npx directus database migrate:latest` to update the DB
+3. Run `pnpm exec database migrate:latest` to update the DB
 
 ## Backing-up a Project
 
@@ -24,7 +24,7 @@ readTime: 4 min read
 
 ## Migrating a Project
 
-Directus doesn't rely on anything besides the database for it's operation. Therefore, migrating your Directus project
+Directus doesn't rely on anything besides the database for it's operation. Therefore, migrating your DB Studio project
 can be done by moving the whole database to a new location using a database dump.
 
 ::: tip File Storage
@@ -40,7 +40,7 @@ Directus can be reverted to an earlier version by going to your terminal, naviga
 running `npm install directus@<version>`.
 
 If you ran any database migrations for a newer version, you can revert those by running
-`npx directus database migrate:down`
+`pnpm exec database migrate:down`
 
 ## Deleting a Project
 
@@ -48,11 +48,11 @@ If you ran any database migrations for a newer version, you can revert those by 
 2. Optional: **Backup any custom code and extensions** within the project's root directory
 3. Optional: **Backup your entire database**, only system tables, or only project tables
 4. **Delete the project's root directory** from the server
-5. **Delete all Directus system tables** (`directus_*`) from the database
+5. **Delete all DB Studio system tables** (`directus_*`) from the database
 
 ::: tip Pure SQL
 
-After completing this process, you will be left with a pure SQL database, with no trace that Directus was ever
+After completing this process, you will be left with a pure SQL database, with no trace that DB Studio was ever
 installed. Any external services connecting to your database's project tables directly (e.g., SQL queries) should
 continue working normally.
 
@@ -60,7 +60,7 @@ continue working normally.
 
 ## Migrating from Version 8
 
-There are two ways to migrate from an existing Directus 8.X instance:
+There are two ways to migrate from an existing DB Studio 8.X instance:
 
 - [Automated Script](#automated-script) (recommended)
 - [Manual Database Export/Import](#manual-database-export-import)
@@ -109,11 +109,11 @@ straightforward to migrate your content from v8 to v9.
 
 #### 1) Setup a Fresh v9 Instance
 
-By installing Directus "fresh", you're ensured your system tables are up-to-date and ready to go.
+By installing DB Studio "fresh", you're ensured your system tables are up-to-date and ready to go.
 
 #### 2) Migrate your Data
 
-Using a tool like [Sequel Pro](http://sequelpro.com) or [TablePlus](https://tableplus.com), export your v8 user-tables
+Using a tool like [Sequel Ace](http://sequel-ace.com) or [TablePlus](https://tableplus.com), export your v8 user-tables
 and import them into your v9 database.
 
 Directus v9 will automatically recognize your tables, and you'll be ready to get started in v9.
