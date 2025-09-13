@@ -8,7 +8,7 @@ export * from './invalid-ip.js';
 export * from './invalid-otp.js';
 export * from './invalid-payload.js';
 export * from './invalid-provider.js';
-export * from './invalid-query.js';
+export { InvalidQueryException } from '@db-studio/exceptions';
 export * from './invalid-token.js';
 export * from './method-not-allowed.js';
 export * from './range-not-satisfiable.js';
