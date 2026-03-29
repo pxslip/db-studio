@@ -112,7 +112,7 @@ field `status` that controls the published state.
 
 7. [Create a new Operation](/configuration/flows/operations#operations)
 
-   ![Inside a Directus Flow, the Create Operation interface is shown. The Name of the operation is "Update Articles". The Key is "update_articles". The type of Operation is "Update Data". The Collection for the operation is "Articles". The Payload for the operation is a JSON object with key - status and value of published. There is also a JSON object for the Query field. A filter that checks that the item status is equal to "scheduled" and the date_published is less than or equal to the current timestamp.](https://cdn.directus.io/docs/v9/headless-cms/how-to-packet-20220222A/scheduling-content-update-articles.webp)
+   ![Inside a DB Studio Flow, the Create Operation interface is shown. The Name of the operation is "Update Articles". The Key is "update_articles". The type of Operation is "Update Data". The Collection for the operation is "Articles". The Payload for the operation is a JSON object with key - status and value of published. There is also a JSON object for the Query field. A filter that checks that the item status is equal to "scheduled" and the date_published is less than or equal to the current timestamp.](https://cdn.directus.io/docs/v9/headless-cms/how-to-packet-20220222A/scheduling-content-update-articles.webp)
 
    a. For the type of Operation, select **Update Item**
 

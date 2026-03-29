@@ -184,7 +184,7 @@ If rate-limiter is enabled, duration in seconds in which points are counted
 Admin users also get the following information:
 
 `directus.version` **string**\
-Current version of Directus used.
+Current version of DB Studio used.
 
 `node.version` **string**\
 Current version of Node used.
@@ -317,7 +317,7 @@ Authenticated admin users also get the following information:
 Directus version in use.
 
 `serviceId` **string**\
-UUID of the current Directus instance.
+UUID of the current DB Studio instance.
 
 `checks` **array**\
 Array with the status of all individually connected services.

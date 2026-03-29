@@ -1,11 +1,11 @@
 ---
-description: The File Library Module aggregates all files within the Directus Project into one consolidated library.
+description: The File Library Module aggregates all files within the DB Studio Project into one consolidated library.
 readTime: 7 min read
 ---
 
 # File Library
 
-> The File Library Module aggregates all files within the Directus Project into one consolidated library. It is a
+> The File Library Module aggregates all files within the DB Studio Project into one consolidated library. It is a
 > full-featured Digital Asset Management (DAM) system for storing, organizing, browsing, and transforming your various
 > files and assets.
 
@@ -68,7 +68,7 @@ Notice the following Buttons in the Header:
 
 ::: tip Deleting Files Linked to Items
 
-By default, Directus will not allow you to delete a File until you remove it from any and all related Items. However,
+By default, DB Studio will not allow you to delete a File until you remove it from any and all related Items. However,
 this behavior can be reconfigured so that Files automatically update when the image is deleted by setting the relational
 constraint of your File Field to `SET NULL` or `CASCADE` when the File is deleted.
 

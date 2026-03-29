@@ -6,8 +6,8 @@ pageClass: page-reference
 
 # Users
 
-> Directus Users are the individual accounts that let you authenticate into the API and App. Each user belongs to a Role
-> which defines its granular Permissions. [Learn more about Users](/getting-started/glossary#users).
+> DB Studio Users are the individual accounts that let you authenticate into the API and App. Each user belongs to a
+> Role which defines its granular Permissions. [Learn more about Users](/getting-started/glossary#users).
 
 ---
 

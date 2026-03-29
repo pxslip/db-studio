@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const APP_SHARED_DEPS = ['@db-studio/extensions-sdk', 'vue', 'vue-router', 'vue-i18n', 'pinia'];
-export const API_SHARED_DEPS = ['directus'];
+export const API_SHARED_DEPS = ['db-studio'];
 
 export const APP_EXTENSION_TYPES = ['interface', 'display', 'layout', 'module', 'panel'] as const;
 export const API_EXTENSION_TYPES = ['hook', 'endpoint'] as const;
@@ -26,7 +26,8 @@ export const APP_OR_HYBRID_EXTENSION_PACKAGE_TYPES = [
 
 export const EXTENSION_LANGUAGES = ['javascript', 'typescript'] as const;
 
-export const EXTENSION_NAME_REGEX = /^(?:(?:@[^/]+\/)?directus-extension-|@directus\/extension-)(.+)$/;
+export const EXTENSION_NAME_REGEX =
+	/^(?:(?:@[^/]+\/)?directus-extension-|@directus\/extension-|(?:@[^/]+\/)?dbs-extension-|@db-studio\/extension-)(.+)$/;
 
 export const EXTENSION_PKG_KEY = 'directus:extension';
 

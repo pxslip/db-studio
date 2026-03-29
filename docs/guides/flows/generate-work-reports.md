@@ -1,5 +1,5 @@
 ---
-description: This recipe outlines a method to generate reports using Directus Flows.
+description: This recipe outlines a method to generate reports using DB Studio Flows.
 tags: []
 skill_level:
 directus_version: 9.18.1

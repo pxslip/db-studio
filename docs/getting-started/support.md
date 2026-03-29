@@ -5,15 +5,17 @@ readTime: 4 min read
 
 # Help & Support
 
-> If you have questions while working with DB Studio (Formerly Directus v9), there are many resources to help you get up-and-running smoothly.
+> If you have questions while working with DB Studio (Formerly Directus v9), there are many resources to help you get
+> up-and-running smoothly.
 
 ## Troubleshooting Steps
 
-If you're experiencing issues or think you have found a problem in DB Studio (Formerly Directus v9), be sure to follow these steps before
-[Reporting a Bug](/contributing/introduction#bug-reporting):
+If you're experiencing issues or think you have found a problem in DB Studio (Formerly Directus v9), be sure to follow
+these steps before [Reporting a Bug](/contributing/introduction#bug-reporting):
 
 1. Ensure your server and database meet the [minimum requirements](/self-hosted/docker-guide.html#supported-databases).
-2. Ensure you’re on the [latest version](https://github.com/pxslip/db-studio/releases/latest) of DB Studio (Formerly Directus v9).
+2. Ensure you’re on the [latest version](https://github.com/pxslip/db-studio/releases/latest) of DB Studio (Formerly
+   Directus v9).
 3. Stop `CTRL+C` and restart the server `pnpmx db-studio start`.
 4. Run the database migration script: `db-studio database migrate:latest`\
    _Note: backup your database first._
@@ -33,13 +35,3 @@ If you're still experiencing a problem after completing the above steps, you can
 [GitHub Discussions](https://github.com/pxslip/db-studio/discussions) is a great first place to reach out for help. Our
 community and core developers often check this platform and answer posts. It has the added benefit of being an archival
 resource for others developers with similar questions.
-
-Our [Discord Community](https://directus.chat) is another great way to get assistance. Please keep all questions in the
-help channels, be considerate, and remember that you are getting free help from the community.
-
-:::warning No Guaranteed Response Time
-
-While the Directus Core Team plays an active and engaged role in community discussions, there is no guaranteed response
-time for Community Support.
-
-:::

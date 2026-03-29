@@ -25,9 +25,10 @@ To manage the Activity Log programmatically, please see our guide on the
 
 ## Overview
 
-The Activity Log is the only Module in Directus Core that is not found in the [Module Bar](/app/overview#_1-module-bar).
-Instead, it is accessed via the notifications tray of the [Sidebar](/app/overview#_4-sidebar). The Activity Log page has
-the same features and functionality as the [Collection Page](/app/content/collections).
+The Activity Log is the only Module in DB Studio Core that is not found in the
+[Module Bar](/app/overview#_1-module-bar). Instead, it is accessed via the notifications tray of the
+[Sidebar](/app/overview#_4-sidebar). The Activity Log page has the same features and functionality as the
+[Collection Page](/app/content/collections).
 
 ::: warning External Changes
 

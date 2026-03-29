@@ -1,5 +1,5 @@
 ---
-description: Learn how to migrate your data model to a new Directus project using Node.js.
+description: Learn how to migrate your data model to a new DB Studio project using Node.js.
 tags: []
 skill_level:
 directus_version: 9.23.0
@@ -23,7 +23,7 @@ Directus' schema migration endpoints allow users to retrieve a project's data mo
 project.
 
 This is useful if you make changes to a data model in a development project and need to apply them to a production
-project, or to move from a self-hosted project to Directus Cloud.
+project, or to move from a self-hosted project to DB Studio Cloud.
 
 ## How-To Guide
 
@@ -33,7 +33,7 @@ You must be an admin user to use these endpoints and follow this guide.
 
 :::
 
-You should have two Directus projects - this guide will refer to them as the "base" and the "target". Before starting,
+You should have two DB Studio projects - this guide will refer to them as the "base" and the "target". Before starting,
 make sure you have a static access token for both projects.
 
 ### Set Up Project
