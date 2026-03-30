@@ -31,7 +31,7 @@
 		"@db-studio/storage": "workspace:*",
 		"@db-studio/utils": "workspace:*",
 		"p-queue": "7.3.4",
-		"undici": "5.22.0"
+		"undici": "5.29.0"
 	},
 	"devDependencies": {
 		"@db-studio/config": "workspace:*",
